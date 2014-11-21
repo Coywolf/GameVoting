@@ -1,0 +1,56 @@
+﻿<RecentFiles>
+  <RecentFiles>
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Account/f:Login.cshtml" caret="0" fromTop="0" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Helpers/f:HtmlHelpers.cs" caret="378" fromTop="9" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Content/f:Site.css" caret="62" fromTop="4" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:App_Start/f:BundleConfig.cs" caret="744" fromTop="18" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/f:AccountModels.cs" caret="265" fromTop="9" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Shared/f:_NavCollapse.cshtml" caret="0" fromTop="0" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/f:Web.config" caret="8021" fromTop="139" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Account/f:Manage.cshtml" caret="215" fromTop="10" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Shared/f:_LoginPartial.cshtml" caret="0" fromTop="0" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Event/f:Index.cshtml" caret="63" fromTop="3" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:Option.cs" caret="207" fromTop="8" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:OptionSet.cs" caret="359" fromTop="16" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventVote.cs" caret="300" fromTop="12" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventType.cs" caret="355" fromTop="16" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventMember.cs" caret="560" fromTop="19" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventOption.cs" caret="471" fromTop="21" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:Event.cs" caret="481" fromTop="19" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:UserProfile.cs" caret="263" fromTop="9" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/f:Global.asax.cs" caret="1138" fromTop="19" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Content/f:bootstrap.css" caret="0" fromTop="0" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Content/f:bootstrap.css.map" caret="0" fromTop="0" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:VotingContext.cs" caret="957" fromTop="18" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Event/f:Event.cshtml" caret="61" fromTop="3" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:App_Start/f:RouteConfig.cs" caret="748" fromTop="24" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Controllers/f:AccountController.cs" caret="7495" fromTop="19" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Shared/f:_Layout.cshtml" caret="442" fromTop="12" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Controllers/f:EventController.cs" caret="506" fromTop="20" />
+  </RecentFiles>
+  <RecentEdits>
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Shared/f:_NavCollapse.cshtml" caret="150" fromTop="1" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Helpers/f:HtmlHelpers.cs" caret="0" fromTop="0" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Content/f:Site.css" caret="57" fromTop="2" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:App_Start/f:BundleConfig.cs" caret="740" fromTop="18" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Shared/f:_LoginPartial.cshtml" caret="425" fromTop="6" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Account/f:Manage.cshtml" caret="421" fromTop="20" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/f:AccountModels.cs" caret="2024" fromTop="21" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/f:Global.asax.cs" caret="1289" fromTop="27" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Event/f:Index.cshtml" caret="31" fromTop="1" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Event/f:Event.cshtml" caret="82" fromTop="4" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventMember.cs" caret="629" fromTop="22" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:UserProfile.cs" caret="436" fromTop="18" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventOption.cs" caret="426" fromTop="19" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:Event.cs" caret="500" fromTop="20" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventType.cs" caret="354" fromTop="16" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:OptionSet.cs" caret="359" fromTop="16" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:Option.cs" caret="425" fromTop="19" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:EventVote.cs" caret="383" fromTop="16" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Models/d:DatabaseModels/f:VotingContext.cs" caret="2016" fromTop="34" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Controllers/f:AccountController.cs" caret="7552" fromTop="20" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Views/d:Shared/f:_Layout.cshtml" caret="862" fromTop="20" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:Controllers/f:EventController.cs" caret="466" fromTop="18" />
+    <File id="4C7CE138-3F0D-499C-8130-C98DB8F010CB/d:App_Start/f:RouteConfig.cs" caret="606" fromTop="19" />
+  </RecentEdits>
+</RecentFiles>
