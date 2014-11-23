@@ -2,3 +2,17 @@
     padding-top: 70px;
     padding-bottom: 30px;
 }
+
+h1.center {
+    text-align: center;
+}
+
+.block-group input.form-control:not(:first-of-type) {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.block-group input.form-control:not(:last-of-type) {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}

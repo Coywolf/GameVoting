@@ -29,6 +29,7 @@ namespace GameVoting.Models.DatabaseModels
         {
             //Stop EF from making foreign keys cascade delete
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
 

@@ -3,22 +3,30 @@
     ViewBag.Title = "Manage Account";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
+@*<p class="message-success">@ViewBag.StatusMessage</p>*@
 
-<p class="message-success">@ViewBag.StatusMessage</p>
+<div class="page-header">
+    <h1>Manage Account <small>@User.Identity.Name</small></h1>
+</div>
 
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Manage", "Account")) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
 
-@if (ViewBag.HasLocalPassword)
-{
-    @Html.Partial("_ChangePasswordPartial")
-}
-else
-{ 
-    @Html.Partial("_SetPasswordPartial")
-}
+            <legend>Change Password</legend>
+            
+            <div class="form-group block-group">
+                @Html.PasswordFor(m => m.OldPassword, new { @class =  "form-control input-lg", placeholder = "Old Password" })
+                @Html.PasswordFor(m => m.NewPassword, new { @class =  "form-control input-lg", placeholder = "New Password" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class =  "form-control input-lg", placeholder = "Confirm Password" })
+            </div>
+            
+            <input type="submit" value="Change password" class="btn btn-block btn-primary"/>
+        }
+    </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
