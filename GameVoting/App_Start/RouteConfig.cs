@@ -14,13 +14,6 @@ namespace GameVoting
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Event",
-                url: "Event/{eventId}",
-                defaults: new { controller = "Event", action = "Event" },
-                constraints: new { eventId = @"\d+"}    //match only if eventId is numeric
-            );
-
-            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Event", action = "Index", id = UrlParameter.Optional }

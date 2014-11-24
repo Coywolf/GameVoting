@@ -1,6 +1,46 @@
 ﻿@{
     ViewBag.Title = "Events";
 }
+@section scripts{
+    @Scripts.Render("~/bundles/Index");
+}
 <div class="page-header">
-  <h1>Events</h1>
+    <h1>
+        Events 
+        <button class="btn btn-primary pull-right" type="button" data-toggle="collapse" 
+        data-target="#createEvent" aria-expanded="true" aria-controls="createEvent">Create</button>
+    </h1>
+</div>
+
+<div id="createEvent" class="collapse">
+    <div class="well">
+        <div class="row">
+            <div class="col-md-4">
+                <form data-bind="with: newEvent">
+                    <legend>Create Event</legend>
+
+                    <input class="form-control" type="text" placeholder="Name" data-bind="value: name" />
+                    <select class="form-control" data-bind="value: type">
+                        <option value="" disabled selected>Event Type</option>
+                        @foreach (var type in ViewBag.EventTypes) { 
+                            <option value="@type.TypeId">@type.Name</option>
+                        }
+                    </select>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" data-bind="checked: isPrivate" /> 
+                            Is Private?
+                        </label>
+                    </div>
+                </form>
+                <button class="btn btn-primary" data-bind="click: CreateEvent">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-bind="foreach: events">
+    <div class="row">
+        this is an event
+    </div>
 </div>
