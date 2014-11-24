@@ -1,37 +1,39 @@
-﻿var viewModel = function (data) {
+﻿var ViewModel = function(data) {
     var self = this;
 
-    self.events = ko.observableArray([1, 2]);
-    self.newEvent = ko.observable(new eventModel({}));
+    self.Events = ko.observableArray([1, 2]);
+    self.NewEvent = ko.observable(new eventModel({ }));
 
-    self.CreateEvent = function () {
+    self.CreateEvent = function() {
         $.ajax({
             url: '',
             type: 'POST',
-            data: ko.toJSON(self.newEvent()),
+            data: {
+                data: ko.toJSON(self.newEvent())
+            },
             dataType: 'json',
             success: function (data) {
-                self.newEvent(new eventModel({}));
-                $('#createEvent').collapse('hide');
+                console.log(window.location);
+                window.location.href = window.location.origin + '/Event/' + data.EventId;
             }
         });
-    }
-}
+    };
+};
 
-var eventModel = function (data) {
+var EventModel = function(data) {
     var self = this;
 
-    self.name = ko.observable(data.Name);
-    self.type = ko.observable(data.Type);
-    self.isPrivate = ko.observable(data.IsPrivate);
-}
+    self.Name = ko.observable(data.Name);
+    self.Type = ko.observable(data.Type);
+    self.IsPrivate = ko.observable(data.IsPrivate);
+};
 
 $(document).ready(function () {
     $.ajax({
         url: '/Event/GetEvents',
         dataType: 'json',
         success: function (data) {
-            ko.applyBindings(new viewModel(data));
+            ko.applyBindings(new ViewModel(data));
         }
     });
 });

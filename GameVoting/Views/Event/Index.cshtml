@@ -16,11 +16,11 @@
     <div class="well">
         <div class="row">
             <div class="col-md-4">
-                <form data-bind="with: newEvent">
+                <form data-bind="with: NewEvent">
                     <legend>Create Event</legend>
 
-                    <input class="form-control" type="text" placeholder="Name" data-bind="value: name" />
-                    <select class="form-control" data-bind="value: type">
+                    <input class="form-control" type="text" placeholder="Name" data-bind="value: Name" />
+                    <select class="form-control" data-bind="value: Type">
                         <option value="" disabled selected>Event Type</option>
                         @foreach (var type in ViewBag.EventTypes) { 
                             <option value="@type.TypeId">@type.Name</option>
@@ -28,7 +28,7 @@
                     </select>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" data-bind="checked: isPrivate" /> 
+                            <input type="checkbox" data-bind="checked: IsPrivate" /> 
                             Is Private?
                         </label>
                     </div>
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div data-bind="foreach: events">
+<div data-bind="foreach: Events">
     <div class="row">
         this is an event
     </div>

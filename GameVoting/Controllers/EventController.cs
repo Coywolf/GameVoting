@@ -22,6 +22,12 @@ namespace GameVoting.Controllers
             return "";
         }
 
+        [HttpPost]
+        public string CreateEvent(string data)
+        {
+            return "";
+        }
+
         #region Page ActionResults
         //Main page, the list of events
         public ActionResult Index()
