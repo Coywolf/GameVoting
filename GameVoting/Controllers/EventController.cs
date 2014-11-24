@@ -17,7 +17,7 @@ namespace GameVoting.Controllers
         }
 
         //Return data for a single event, for voting
-        public string GetEvent(int id)
+        public string GetEvent(int eventId)
         {
             return "";
         }
