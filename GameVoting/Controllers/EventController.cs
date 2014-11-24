@@ -18,12 +18,15 @@ namespace GameVoting.Controllers
 
         //Return data for a single event, for voting
         public string GetEvent(int eventId)
+<<<<<<< HEAD
         {
             return "";
         }
 
         [HttpPost]
         public string CreateEvent(string data)
+=======
+>>>>>>> 4b9142d8c6b68334d8826f466adcd2a35bcc2b07
         {
             return "";
         }
