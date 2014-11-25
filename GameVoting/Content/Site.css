@@ -16,3 +16,7 @@ h1.center {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
+
+li.strong-option {
+    font-weight: bold;
+}

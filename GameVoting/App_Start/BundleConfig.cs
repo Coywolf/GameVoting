@@ -12,7 +12,8 @@ namespace GameVoting
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
-                        "~/Scripts/knockout-{version}.js"));
+                        "~/Scripts/knockout-{version}.js",
+                        "~/Scripts/chosen.jquery.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
@@ -32,10 +33,9 @@ namespace GameVoting
 
             #region Styles
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                        "~/Content/bootstrap.css",
+                        "~/Content/chosen.css",
                         "~/Content/Site.css"));
-
-            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
-                        "~/Content/bootstrap.css"));
             #endregion
         }
     }

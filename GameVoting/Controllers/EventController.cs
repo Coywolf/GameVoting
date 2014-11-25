@@ -19,19 +19,22 @@ namespace GameVoting.Controllers
 
             using (var db = new VotingContext())
             {
-                var events = db.Event.OrderByDescending(e => e.StartDate).ToList();
-
+                //todo only private if current user is a member
+                var events = db.Event.OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
+                
                 return JsonConvert.SerializeObject(new { events });
             }
         }
 
         //Return data for a single event, for voting
+        [Authorize]
         public string GetEvent(int eventId)
         {
             return "";
         }
 
         [HttpPost]
+        [Authorize]
         public string CreateEvent(string data)
         {
             try
@@ -69,14 +72,20 @@ namespace GameVoting.Controllers
             using (var db = new VotingContext())
             {
                 ViewBag.EventTypes = db.EventType.ToList();
+                ViewBag.Users = db.UserProfile.OrderBy(u => u.UserName).ToList();
             }
 
             return View();
         }
 
         //Event page, for voting
-        public ActionResult Event()
+        [Authorize]
+        public ActionResult View(int? id)
         {
+            if (id == null)
+            {
+                return new RedirectResult("/");
+            }
             return View();
         }
         #endregion

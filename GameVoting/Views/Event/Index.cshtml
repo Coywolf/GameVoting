@@ -7,40 +7,56 @@
 <div class="page-header">
     <h1>
         Events 
-        <button class="btn btn-primary pull-right" type="button" data-toggle="collapse" 
-        data-target="#createEvent" aria-expanded="true" aria-controls="createEvent">Create</button>
+        @if (Request.IsAuthenticated)
+        {
+            <button class="btn btn-primary pull-right" type="button" data-toggle="collapse" 
+                    data-target="#createEvent" aria-expanded="true" aria-controls="createEvent">Create</button>
+        }
     </h1>
 </div>
 
-<div id="createEvent" class="collapse">
-    <div class="well">
-        <div class="row">
-            <div class="col-md-4">
-                <form data-bind="with: NewEvent">
-                    <legend>Create Event</legend>
+@if (Request.IsAuthenticated)
+{
+    <div id="createEvent" class="collapse">
+        <div class="well">
+            <div class="row">
+                <div class="col-md-4">
+                    <form data-bind="template: { data: NewEvent, if: NewEvent, afterRender: NewEventInit }">
+                        <legend>Create Event</legend>
 
-                    <input class="form-control" type="text" placeholder="Name" data-bind="value: Name" />
-                    <select class="form-control" data-bind="value: Type">
-                        <option value="" disabled selected>Event Type</option>
-                        @foreach (var type in ViewBag.EventTypes) { 
-                            <option value="@type.TypeId">@type.Name</option>
-                        }
-                    </select>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" data-bind="checked: IsPrivate" /> 
-                            Is Private?
-                        </label>
-                    </div>
-                </form>
-                <button class="btn btn-primary" data-bind="click: CreateEvent">Submit</button>
+                        <input class="form-control" type="text" placeholder="Name" data-bind="value: Name" />
+                        <select id="type-select" class="form-control" data-bind="value: TypeId">
+                            <option value=""></option>
+                            @foreach (var type in ViewBag.EventTypes)
+                            {
+                                <option value="@type.TypeId">@type.Name</option>
+                            }
+                        </select>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" data-bind="checked: IsPrivate" /> 
+                                Is Private?
+                            </label>
+                        </div>
+                        <select id="member-select" class="form-control" multiple>
+                            <option value=""></option>
+                            @foreach (var type in ViewBag.Users)
+                            {
+                                <option value="@type.UserId">@type.UserName</option>
+                            }
+                        </select>
+                    </form>
+                    <button class="btn btn-primary" data-bind="click: CreateEvent">Submit</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 <div data-bind="foreach: Events">
     <div class="row">
-        this is an event
+        <div class="col-md-4">
+            <a data-bind="attr: { href: url }, text: Name"></a>
+        </div>
     </div>
 </div>
