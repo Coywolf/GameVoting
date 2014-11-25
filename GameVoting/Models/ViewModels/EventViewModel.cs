@@ -20,7 +20,7 @@ namespace GameVoting.Models.ViewModels
         public string EventType { get; set; }
 
         public List<EventOptionViewModel> Options { get; set; }
-
+                
         public EventViewModel(Event e)
         {
             EventId = e.EventId;
@@ -36,5 +36,7 @@ namespace GameVoting.Models.ViewModels
 
             Options = e.Options.Select(o => new EventOptionViewModel(o)).ToList();
         }
+
+        public EventViewModel() { }
     }
 }
