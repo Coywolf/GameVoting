@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GameVoting.Models.DatabaseModels;
+using GameVoting.Models.ViewModels;
 using Newtonsoft.Json;
+using WebMatrix.WebData;
 
 namespace GameVoting.Controllers
 {
@@ -13,22 +15,51 @@ namespace GameVoting.Controllers
         //Return list of events for main page
         public string GetEvents()
         {
-            return JsonConvert.SerializeObject(new { test = "hello"});
+            //todo paginate or otherwise limit results
+
+            using (var db = new VotingContext())
+            {
+                var events = db.Event.OrderByDescending(e => e.StartDate).ToList();
+
+                return JsonConvert.SerializeObject(new { events });
+            }
         }
 
         //Return data for a single event, for voting
         public string GetEvent(int eventId)
-<<<<<<< HEAD
         {
             return "";
         }
 
         [HttpPost]
         public string CreateEvent(string data)
-=======
->>>>>>> 4b9142d8c6b68334d8826f466adcd2a35bcc2b07
         {
-            return "";
+            try
+            {
+                var model = JsonConvert.DeserializeObject<EventViewModel>(data);
+
+                using (var db = new VotingContext())
+                {
+                    var newEvent = new Event
+                        {
+                            Name = model.Name,
+                            TypeId = model.TypeId,
+                            CreatedBy = WebSecurity.CurrentUserId,
+                            IsPrivate = model.IsPrivate,
+                            StartDate = DateTime.Now
+                        };
+                    //todo options
+                    db.Event.Add(newEvent);
+                    db.SaveChanges();
+                    db.Entry<Event>(newEvent).Reload();
+                    
+                    return JsonConvert.SerializeObject(new { newEvent.EventId });
+                }
+            }
+            catch (Exception e)
+            {
+                return JsonConvert.SerializeObject(new { EventId = 0 });
+            }
         }
 
         #region Page ActionResults

@@ -1,15 +1,17 @@
 ﻿var ViewModel = function(data) {
     var self = this;
 
-    self.Events = ko.observableArray([1, 2]);
-    self.NewEvent = ko.observable(new eventModel({ }));
+    self.Events = ko.observableArray($.map(data.events, function (e) {
+        return new EventModel(e);
+    }));
+    self.NewEvent = ko.observable(new EventModel({}));
 
     self.CreateEvent = function() {
         $.ajax({
-            url: '',
+            url: '/Event/CreateEvent',
             type: 'POST',
             data: {
-                data: ko.toJSON(self.newEvent())
+                data: ko.toJSON(self.NewEvent())
             },
             dataType: 'json',
             success: function (data) {
@@ -26,6 +28,8 @@ var EventModel = function(data) {
     self.Name = ko.observable(data.Name);
     self.Type = ko.observable(data.Type);
     self.IsPrivate = ko.observable(data.IsPrivate);
+    self.StartDate = ko.observable(data.StartDate);
+    self.EndDate = ko.observable(data.EndDate);
 };
 
 $(document).ready(function () {
