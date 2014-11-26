@@ -1,6 +1,8 @@
 ﻿var ViewModel = function () {
     var self = this;
 
+    self.EventTypes = ko.observableArray();
+    self.Users = ko.observableArray();
     self.Events = ko.observableArray();
     self.NewEvent = ko.observable(new EventModel({}));
     self.NewEventInit = function (elements) {
@@ -69,6 +71,17 @@ var EventModel = function(data) {
         }
     });
 
+    self.AddOption = function () {
+        var name = ko.observable("");
+        self.Options.push(name);
+    };
+    self.AddOptionSet = function() {
+
+    };
+    self.RemoveOption = function (option) {
+        self.Options.remove(option);
+    };
+
     self.url = "/Event/View/" + self.EventId;
 };
 
@@ -86,15 +99,29 @@ var MemberModel = function(data) {
     self.UserName = ko.observable(data.UserName);
 };
 
+var debug;
 $(document).ready(function () {
     //initialize with an empty model
     var model = new ViewModel();
     ko.applyBindings(model);
+    debug = model;
     
     $.ajax({
-        url: '/Event/GetEvents',
+        url: '/Event/GetEventData',
         dataType: 'json',
         success: function (data) {
+            model.EventTypes($.map(data.eventTypes, function (e) {
+                return {
+                    id: e.TypeId,
+                    name: e.Name
+                };
+            }));
+            model.Users($.map(data.users, function (u) {
+                return {
+                    id: u.UserId,
+                    name: u.UserName
+                };
+            }));
             model.Events($.map(data.events, function(e) {
                 return new EventModel(e);
             }));

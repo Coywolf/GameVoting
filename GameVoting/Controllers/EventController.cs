@@ -13,7 +13,7 @@ namespace GameVoting.Controllers
     public class EventController : Controller
     {
         //Return list of events for main page
-        public string GetEvents()
+        public string GetEventData()
         {
             var userId = WebSecurity.CurrentUserId;
 
@@ -25,8 +25,11 @@ namespace GameVoting.Controllers
                 var memberEvents = db.EventMember.Where(m => m.UserId == userId).Select(m => m.Event);
 
                 var events = publicEvents.Union(memberEvents).OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
+
+                var eventTypes = db.EventType.ToList();
+                var users = db.UserProfile.OrderBy(u => u.UserName).ToList();
                 
-                return JsonConvert.SerializeObject(new { events });
+                return JsonConvert.SerializeObject(new { events, eventTypes, users });
             }
         }
 
@@ -34,6 +37,17 @@ namespace GameVoting.Controllers
         [Authorize]
         public string GetEvent(int eventId)
         {
+            var userId = WebSecurity.CurrentUserId;
+
+            using (var db = new VotingContext())
+            {
+                var eventRow = db.Event.SingleOrDefault(e => e.EventId == eventId);
+                if (eventRow != null && (!eventRow.IsPrivate || eventRow.Members.Any(m => m.UserId == userId)))
+                {
+                    return JsonConvert.SerializeObject(new DetailEventViewModel(eventRow));
+                }
+            }
+
             return "";
         }
 
@@ -94,12 +108,6 @@ namespace GameVoting.Controllers
         //Main page, the list of events
         public ActionResult Index()
         {
-            using (var db = new VotingContext())
-            {
-                ViewBag.EventTypes = db.EventType.ToList();
-                ViewBag.Users = db.UserProfile.OrderBy(u => u.UserName).ToList();
-            }
-
             return View();
         }
 

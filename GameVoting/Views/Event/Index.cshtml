@@ -23,24 +23,43 @@
                 <div class="col-md-4">
                     <form data-bind="template: { data: NewEvent, if: NewEvent, afterRender: NewEventInit }">
                         <legend>Create Event</legend>
+                        
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Name" data-bind="value: Name" />
+                        </div>
+                        
+                        <div class="form-group">
+                            <select id="type-select" class="form-control" data-bind="value: TypeId">
+                                <option value=""></option>
 
-                        <input class="form-control" type="text" placeholder="Name" data-bind="value: Name" />
-                        <select id="type-select" class="form-control" data-bind="value: TypeId">
-                            <option value=""></option>
-                            @foreach (var type in ViewBag.EventTypes)
-                            {
-                                <option value="@type.TypeId">@type.Name</option>
-                            }
-                        </select>
-                        <select id="member-select" class="form-control" multiple>
-                            <option value=""></option>
-                            @foreach (var type in ViewBag.Users)
-                            {
-                                <option value="@type.UserId">@type.UserName</option>
-                            }
-                        </select>
+                                <!-- ko foreach: EventTypes -->
+                                <option data-bind="text: name, value: id"></option>
+                                <!-- /ko -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <select id="member-select" class="form-control" multiple>
+                                <option value=""></option>
+
+                                <!-- ko foreach: Users -->
+                                <option data-bind="text: name, value: id"></option>
+                                <!-- /ko -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" data-bind="foreach: Options">
+                            <div class="input-group">
+                                <input class="form-control" data-bind="value: $rawData" placeholder="Name"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-danger" data-bind="click: function () { $parent.RemoveOption($rawData); }" type="button">X</button>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-default" data-bind="click: AddOption">Add Option</button>
+                        <button class="btn btn-primary" data-bind="click: $parent.CreateEvent">Submit</button>
                     </form>
-                    <button class="btn btn-primary" data-bind="click: CreateEvent">Submit</button>
                 </div>
             </div>
         </div>
