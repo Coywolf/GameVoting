@@ -209,6 +209,7 @@
     <Compile Include="Models\DatabaseModels\OptionSet.cs" />
     <Compile Include="Models\DatabaseModels\UserProfile.cs" />
     <Compile Include="Models\DatabaseModels\VotingContext.cs" />
+    <Compile Include="Models\ViewModels\EventMemberViewModel.cs" />
     <Compile Include="Models\ViewModels\EventOptionViewModel.cs" />
     <Compile Include="Models\ViewModels\EventViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

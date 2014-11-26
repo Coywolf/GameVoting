@@ -15,6 +15,15 @@
             width: "100%",
             placeholder_text_multiple: "Members (Optional)"
         });
+        //change event to update the Members observable
+        memberElement.on('change', function(ev, params) {
+            if(params.selected) {
+                self.NewEvent().Members.push(params.selected);
+            }
+            if(params.deselected) {
+                self.NewEvent().Members.remove(params.deselected);
+            }
+        });
     };
 
     self.CreateEvent = function() {
@@ -42,8 +51,39 @@ var EventModel = function(data) {
     self.IsPrivate = ko.observable(data.IsPrivate);
     self.StartDate = ko.observable(data.StartDate);
     self.EndDate = ko.observable(data.EndDate);
+    self.Creator = ko.observable(data.Creator);
+    self.EventType = ko.observable(data.EventType);
+
+    self.Options = ko.observableArray(data.Options ? $.map(data.Options, function (o) {
+        return new OptionModel(o);
+    }) : []);
+    self.Members = ko.observableArray(data.Members ? $.map(data.Members, function (m) {
+        return new MemberModel(m);
+    }) : []);
+    self.Members.subscribe(function(newVal) {
+        if(newVal.length > 0) {
+            self.IsPrivate(true);
+        }
+        else {
+            self.IsPrivate(false);
+        }
+    });
 
     self.url = "/Event/View/" + self.EventId;
+};
+
+var OptionModel = function(data) {
+    var self = this;
+
+    self.OptionId = data.OptionId;
+    self.Name = ko.observable(data.Name);
+};
+
+var MemberModel = function(data) {
+    var self = this;
+
+    self.UserId = data.UserId;
+    self.UserName = ko.observable(data.UserName);
 };
 
 $(document).ready(function () {

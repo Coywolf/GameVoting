@@ -18,8 +18,6 @@ namespace GameVoting.Models.ViewModels
 
         public string Creator { get; set; }
         public string EventType { get; set; }
-
-        public List<EventOptionViewModel> Options { get; set; }
                 
         public EventViewModel(Event e)
         {
@@ -33,10 +31,26 @@ namespace GameVoting.Models.ViewModels
 
             Creator = e.Creator.UserName;
             EventType = e.Type.Name;
-
-            Options = e.Options.Select(o => new EventOptionViewModel(o)).ToList();
         }
-
         public EventViewModel() { }
+    }
+
+    public class CreateEventViewModel : EventViewModel
+    {
+        public List<string> Options { get; set; }
+        public List<int> Members { get; set; }
+    }
+
+    public class DetailEventViewModel : EventViewModel
+    {
+        public List<EventOptionViewModel> Options { get; set; }
+        public List<EventMemberViewModel> Members { get; set; }
+
+        public DetailEventViewModel(Event e) : base(e)
+        {
+            Options = e.Options.Select(o => new EventOptionViewModel(o)).ToList();
+            Members = e.Members.Select(m => new EventMemberViewModel(m)).ToList();
+        }
+        public DetailEventViewModel(){ }
     }
 }

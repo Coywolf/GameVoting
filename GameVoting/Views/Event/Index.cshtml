@@ -32,12 +32,6 @@
                                 <option value="@type.TypeId">@type.Name</option>
                             }
                         </select>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" data-bind="checked: IsPrivate" /> 
-                                Is Private?
-                            </label>
-                        </div>
                         <select id="member-select" class="form-control" multiple>
                             <option value=""></option>
                             @foreach (var type in ViewBag.Users)

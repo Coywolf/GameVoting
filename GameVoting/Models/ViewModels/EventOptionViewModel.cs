@@ -16,5 +16,6 @@ namespace GameVoting.Models.ViewModels
             OptionId = o.OptionId;
             Name = o.Name;
         }
+        public EventOptionViewModel(){ }
     }
 }

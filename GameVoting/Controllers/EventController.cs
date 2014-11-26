@@ -15,12 +15,16 @@ namespace GameVoting.Controllers
         //Return list of events for main page
         public string GetEvents()
         {
+            var userId = WebSecurity.CurrentUserId;
+
             //todo paginate or otherwise limit results
 
             using (var db = new VotingContext())
             {
-                //todo only private if current user is a member
-                var events = db.Event.OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
+                var publicEvents = db.Event.Where(e => !e.IsPrivate);
+                var memberEvents = db.EventMember.Where(m => m.UserId == userId).Select(m => m.Event);
+
+                var events = publicEvents.Union(memberEvents).OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
                 
                 return JsonConvert.SerializeObject(new { events });
             }
@@ -39,7 +43,7 @@ namespace GameVoting.Controllers
         {
             try
             {
-                var model = JsonConvert.DeserializeObject<EventViewModel>(data);
+                var model = JsonConvert.DeserializeObject<CreateEventViewModel>(data);
 
                 using (var db = new VotingContext())
                 {
@@ -51,8 +55,29 @@ namespace GameVoting.Controllers
                             IsPrivate = model.IsPrivate,
                             StartDate = DateTime.Now
                         };
-                    //todo options
                     db.Event.Add(newEvent);
+
+                    foreach (var option in model.Options)
+                    {
+                        var newOption = new EventOption
+                            {
+                                Event = newEvent,
+                                Name = option
+                            };
+                        db.EventOption.Add(newOption);
+                    }
+
+                    foreach (var userId in model.Members)
+                    {
+                        var newMember = new EventMember
+                            {
+                                Event = newEvent,
+                                UserId = userId,
+                                JoinedDate = DateTime.Now
+                            };
+                        db.EventMember.Add(newMember);
+                    }
+                    
                     db.SaveChanges();
                     db.Entry<Event>(newEvent).Reload();
                     
