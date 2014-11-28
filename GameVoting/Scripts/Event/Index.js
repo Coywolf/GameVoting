@@ -7,24 +7,25 @@
 
     self.Events = ko.observableArray();
     self.NewEvent = ko.observable(new EventModel({}));
-    self.NewEventInit = function (elements) {
-        var typeElement = $(elements).find('#type-select').addBack('#type-select').first();
+    self.TypeListInit = function () {
+        var typeElement = $('#type-select').first();
         typeElement.chosen({
             width: "100%",
             placeholder_text_single: "Event Type"
-        });
-        
-        var memberElement = $(elements).find('#member-select').addBack('#member-select').first();
+        });        
+    };
+    self.MemberListInit = function () {
+        var memberElement = $('#member-select').first();
         memberElement.chosen({
             width: "100%",
             placeholder_text_multiple: "Members (Optional)"
         });
         //change event to update the Members observable
-        memberElement.on('change', function(ev, params) {
-            if(params.selected) {
+        memberElement.on('change', function (ev, params) {
+            if (params.selected) {
                 self.NewEvent().Members.push(params.selected);
             }
-            if(params.deselected) {
+            if (params.deselected) {
                 self.NewEvent().Members.remove(params.deselected);
             }
         });
