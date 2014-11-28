@@ -32,7 +32,7 @@
                             <select id="type-select" class="form-control" data-bind="value: TypeId">
                                 <option value=""></option>
 
-                                <!-- ko foreach: EventTypes -->
+                                <!-- ko foreach: $parent.EventTypes -->
                                 <option data-bind="text: name, value: id"></option>
                                 <!-- /ko -->
                             </select>
@@ -42,7 +42,7 @@
                             <select id="member-select" class="form-control" multiple>
                                 <option value=""></option>
 
-                                <!-- ko foreach: Users -->
+                                <!-- ko foreach: $parent.Users -->
                                 <option data-bind="text: name, value: id"></option>
                                 <!-- /ko -->
                             </select>
@@ -57,7 +57,15 @@
                             </div>
                         </div>
                         
-                        <button class="btn btn-default" data-bind="click: AddOption">Add Option</button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-bind="click: AddOption">Add Option</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" data-bind="foreach: $parent.OptionSets">
+                                <li data-bind="click: $parent.AddOptionSet"><a href="#" data-bind="text: name"></a></li>
+                            </ul>
+                        </div>
                         <button class="btn btn-primary" data-bind="click: $parent.CreateEvent">Submit</button>
                     </form>
                 </div>

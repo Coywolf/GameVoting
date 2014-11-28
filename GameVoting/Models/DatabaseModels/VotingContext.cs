@@ -55,10 +55,22 @@ namespace GameVoting.Models.DatabaseModels
             //}
 
             //Add Event Types
-            context.EventType.Add(new EventType() {Name = "Favorite", Description = "Pick your favorite option from those available"});
+            context.EventType.Add(new EventType() { Name = "Favorite", Description = "Pick your favorite option from those available" });
             context.EventType.Add(new EventType() { Name = "Ok", Description = "Mark all options that you are ok with." });
             context.EventType.Add(new EventType() { Name = "Ok-Rank", Description = "Mark all options that you are ok with, and for each, provide a ranking." });
             context.EventType.Add(new EventType() { Name = "Rank", Description = "Provide a unique rank for all options." });
+
+            //Option Sets
+            var lunchGames = new OptionSet() { Name = "Lunch Games" };
+            context.OptionSet.Add(lunchGames);
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "One Night Ultimate Werewolf" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Resistance: Avalon" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Saboteur" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Masquerade" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Lifeboat" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Skulls and Roses" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Ultimate Werewolf" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "No Game" });
 
             base.Seed(context);
         }

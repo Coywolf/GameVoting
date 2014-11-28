@@ -212,6 +212,7 @@
     <Compile Include="Models\ViewModels\EventMemberViewModel.cs" />
     <Compile Include="Models\ViewModels\EventOptionViewModel.cs" />
     <Compile Include="Models\ViewModels\EventViewModel.cs" />
+    <Compile Include="Models\ViewModels\OptionSetViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

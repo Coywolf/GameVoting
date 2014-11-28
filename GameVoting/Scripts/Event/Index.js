@@ -3,6 +3,8 @@
 
     self.EventTypes = ko.observableArray();
     self.Users = ko.observableArray();
+    self.OptionSets = ko.observableArray();
+
     self.Events = ko.observableArray();
     self.NewEvent = ko.observable(new EventModel({}));
     self.NewEventInit = function (elements) {
@@ -72,11 +74,12 @@ var EventModel = function(data) {
     });
 
     self.AddOption = function () {
-        var name = ko.observable("");
-        self.Options.push(name);
+        self.Options.push(ko.observable(""));
     };
-    self.AddOptionSet = function() {
-
+    self.AddOptionSet = function(optionSet) {
+        for (var i = 0; i < optionSet.options.length; i++) {
+            self.Options.push(ko.observable(optionSet.options[i].name));
+        }
     };
     self.RemoveOption = function (option) {
         self.Options.remove(option);
@@ -120,6 +123,18 @@ $(document).ready(function () {
                 return {
                     id: u.UserId,
                     name: u.UserName
+                };
+            }));
+            model.OptionSets($.map(data.optionSets, function (os) {
+                return {
+                    id: os.OptionSetId,
+                    name: os.Name,
+                    options: $.map(os.Options, function (o) {
+                        return {
+                            id: o.OptionId,
+                            name: o.Name
+                        }
+                    })
                 };
             }));
             model.Events($.map(data.events, function(e) {
