@@ -27,8 +27,8 @@ namespace GameVoting.Controllers
                 var events = publicEvents.Union(memberEvents).OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
 
                 //static data
-                var eventTypes = db.EventType.ToList();
-                var users = db.UserProfile.OrderBy(u => u.UserName).ToList();
+                var eventTypes = db.EventType.OrderBy(t => t.Name).ToList().Select(t => new EventTypeViewModel(t));
+                var users = db.UserProfile.OrderBy(u => u.UserName).ToList().Select(u => new UserViewModel(u));
                 var optionSets = db.OptionSet.OrderBy(o => o.Name).ToList().Select(o => new OptionSetViewModel(o));
                 
                 return JsonConvert.SerializeObject(new { events, eventTypes, users, optionSets });

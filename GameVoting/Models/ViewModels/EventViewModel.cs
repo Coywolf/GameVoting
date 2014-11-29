@@ -43,13 +43,19 @@ namespace GameVoting.Models.ViewModels
 
     public class DetailEventViewModel : EventViewModel
     {
+        public int? MinScore { get; set; }
+        public int? MaxScore { get; set; }
+
         public List<EventOptionViewModel> Options { get; set; }
-        public List<EventMemberViewModel> Members { get; set; }
+        public List<UserViewModel> Members { get; set; }
 
         public DetailEventViewModel(Event e) : base(e)
         {
+            MinScore = e.Type.MinScore;
+            MaxScore = e.Type.MaxScore;
+
             Options = e.Options.Select(o => new EventOptionViewModel(o)).ToList();
-            Members = e.Members.Select(m => new EventMemberViewModel(m)).ToList();
+            Members = e.Members.Select(m => new UserViewModel(m)).ToList();
         }
         public DetailEventViewModel(){ }
     }

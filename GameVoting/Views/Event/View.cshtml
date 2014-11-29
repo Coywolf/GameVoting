@@ -8,3 +8,10 @@
     <h1>Voting</h1>
     <p>explanation goes here</p>
 </div>
+
+<div data-bind="foreach: Options">
+    <div class="row">
+        <div class="col-md-4" data-bind="text: Name"></div>
+        <div class="col-md-8" data-bind="vote: {value: Score, min: $parent.MinScore, max: $parent.MaxScore}"></div>
+    </div>
+</div>

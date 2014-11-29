@@ -17,6 +17,9 @@ namespace GameVoting.Models.DatabaseModels
         [Required]
         public string Name { get; set; }
 
+        public int? MinScore { get; set; }  //Null = N
+        public int? MaxScore { get; set; }  //Null = N
+
         [MaxLength(250)]
         public string Description { get; set; }
 
