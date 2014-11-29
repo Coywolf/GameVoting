@@ -45,17 +45,50 @@ namespace GameVoting.Models.ViewModels
     {
         public int? MinScore { get; set; }
         public int? MaxScore { get; set; }
+        public bool HasVoted { get; set; }
 
         public List<EventOptionViewModel> Options { get; set; }
         public List<UserViewModel> Members { get; set; }
 
-        public DetailEventViewModel(Event e) : base(e)
+        public DetailEventViewModel(Event e) 
+            : base(e)
         {
             MinScore = e.Type.MinScore;
             MaxScore = e.Type.MaxScore;
+            HasVoted = false;
 
-            Options = e.Options.Select(o => new EventOptionViewModel(o)).ToList();
-            Members = e.Members.Select(m => new UserViewModel(m)).ToList();
+            var defaultScore = e.Type.Name == "Favorite" ? 0 : (int?)null;
+
+            Options = e.Options.Select(o => new EventOptionViewModel(o, defaultScore)).OrderBy(o => o.Name).ToList();
+            Members = e.Members.Select(m => new UserViewModel(m)).OrderBy(u => u.UserName).ToList();
+        }
+
+        public DetailEventViewModel(Event e, int UserId)
+            : this(e)
+        {
+            HasVoted = true;
+
+            var options = Options.OrderBy(o => o.OptionId).ToList();
+            var votes = e.Members.Single(m => m.UserId == UserId).Votes.OrderBy(v => v.Option.OptionId).ToList();
+
+            int optionPointer = 0, votePointer = 0;
+            while (optionPointer < Options.Count)
+            {
+                if (options[optionPointer].OptionId == votes[votePointer].OptionId)
+                {
+                    options[optionPointer].Score = votes[votePointer].Score;
+                    optionPointer++;
+                    votePointer++;
+                }
+                else if (options[optionPointer].OptionId < votes[votePointer].OptionId)
+                {
+                    optionPointer++;
+                }
+                else
+                {
+                    votePointer++;
+                }
+            }
         }
         public DetailEventViewModel(){ }
     }

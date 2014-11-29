@@ -26,6 +26,20 @@
             }
         }
     };
+
+    self.Submit = function () {
+        $.ajax({
+            url: '/Event/SubmitVote',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                voteData: ko.toJSON(self.Options)
+            },
+            success: function (data) {
+
+            }
+        });
+    };
 };
 
 self.OptionModel = function (data, parent) {
@@ -33,7 +47,7 @@ self.OptionModel = function (data, parent) {
 
     self.OptionId = data.OptionId;
     self.Name = data.Name;
-    self.Score = ko.observable(parent.EventType == "Favorite" ? 0 : null);
+    self.Score = ko.observable(data.Score);
 
     self.Score.subscribe(function (newValue) {
         if (parent.EventType == "Favorite") {

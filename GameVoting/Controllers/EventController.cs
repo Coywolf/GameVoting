@@ -46,11 +46,80 @@ namespace GameVoting.Controllers
                 var eventRow = db.Event.SingleOrDefault(e => e.EventId == eventId);
                 if (eventRow != null && (!eventRow.IsPrivate || eventRow.Members.Any(m => m.UserId == userId)))
                 {
-                    return JsonConvert.SerializeObject(new DetailEventViewModel(eventRow));
+                    if (eventRow.Members.Single(m => m.UserId == userId).Votes.Any())
+                    {
+                        //user has votes, return with their vote data
+                        return JsonConvert.SerializeObject(new DetailEventViewModel(eventRow, userId));
+                    }
+                    else
+                    {
+                        return JsonConvert.SerializeObject(new DetailEventViewModel(eventRow));
+                    }
                 }
             }
 
             return "";
+        }
+
+        [HttpPost]
+        [Authorize]
+        public string SubmitVote(int eventId, string voteData)
+        {
+            //todo fail responses
+            try
+            {
+                var votes = JsonConvert.DeserializeObject<List<EventOptionViewModel>>(voteData);
+
+                using (var db = new VotingContext())
+                {
+                    var eventRow = db.Event.Single(e => e.EventId == eventId);
+                    EventMember member;
+
+                    if (eventRow.IsPrivate)
+                    {
+                        member = eventRow.Members.SingleOrDefault(m => m.UserId == WebSecurity.CurrentUserId);
+                        if (member == null)
+                        {
+                            return "";
+                        }
+                    }
+                    else
+                    {
+                        member = new EventMember
+                        {
+                            Event = eventRow,
+                            UserId = WebSecurity.CurrentUserId,
+                            JoinedDate = DateTime.Now
+                        };
+                        db.EventMember.Add(member);
+                    }
+
+                    if (member.Votes.Any())
+                    {
+                        //member has voted already
+                        return "";
+                    }
+                    //todo vote data must be valid for the event type and options
+
+                    foreach (var vote in votes)
+                    {
+                        var newVote = new EventVote
+                        {
+                            OptionId = vote.OptionId,
+                            Member = member,
+                            Score = vote.Score.Value
+                        };
+                        db.EventVote.Add(newVote);
+                    }
+
+                    db.SaveChanges();
+                    return "";
+                }
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
         }
 
         [HttpPost]
@@ -92,6 +161,18 @@ namespace GameVoting.Controllers
                                 JoinedDate = DateTime.Now
                             };
                         db.EventMember.Add(newMember);
+                    }
+
+                    //make sure the creator is added on a private event
+                    if (model.IsPrivate && !model.Members.Any(m => m == WebSecurity.CurrentUserId))
+                    {
+                        var creatorMember = new EventMember
+                        {
+                            Event = newEvent,
+                            UserId = WebSecurity.CurrentUserId,
+                            JoinedDate = DateTime.Now
+                        };
+                        db.EventMember.Add(creatorMember);
                     }
                     
                     db.SaveChanges();

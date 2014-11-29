@@ -10,11 +10,13 @@ namespace GameVoting.Models.ViewModels
     {
         public int OptionId { get; set; }
         public string Name { get; set; }
+        public int? Score { get; set; }
 
-        public EventOptionViewModel(EventOption o)
+        public EventOptionViewModel(EventOption o, int? defaultScore)
         {
             OptionId = o.OptionId;
             Name = o.Name;
+            Score = defaultScore;
         }
         public EventOptionViewModel(){ }
     }
