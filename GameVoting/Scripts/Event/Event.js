@@ -3,12 +3,12 @@
 
     self.EventId = data.EventId;
     self.Name = ko.observable(data.Name);
-    self.TypeId = ko.observable(data.TypeId);
+    self.TypeId = data.TypeId;
     self.IsPrivate = ko.observable(data.IsPrivate);
     self.StartDate = data.StartDate;
     self.EndDate = ko.observable(data.EndDate);
     self.Creator = ko.observable(data.Creator);
-    self.EventType = ko.observable(data.EventType);
+    self.EventType = data.EventType;
 
     self.MinScore = data.MinScore == undefined ? data.Options.length : data.MinScore;
     self.MaxScore = data.MaxScore == undefined ? data.Options.length : data.MaxScore;
@@ -16,6 +16,16 @@
     self.Options = $.map(data.Options, function (o) {
         return new OptionModel(o, self);
     });
+    self.MakeOptionUnique = function (option, replaceWith) {
+        var score = option.Score();
+
+        for (var i = 0; i < self.Options.length; i++) {
+            var curOption = self.Options[i];
+            if (curOption != option && curOption.Score() == score) {
+                curOption.Score(replaceWith);
+            }
+        }
+    };
 };
 
 self.OptionModel = function (data, parent) {
@@ -23,7 +33,26 @@ self.OptionModel = function (data, parent) {
 
     self.OptionId = data.OptionId;
     self.Name = data.Name;
-    self.Score = ko.observable(parent.MinScore);
+    self.Score = ko.observable(parent.EventType == "Favorite" ? 0 : null);
+
+    self.Score.subscribe(function (newValue) {
+        if (parent.EventType == "Favorite") {
+            //'1' must be unique
+            if (newValue == 1) {
+                parent.MakeOptionUnique(self, 0);
+            }
+        }
+        else if (parent.EventType == "Ok") {
+            //no restriction
+        }
+        else if (parent.EventType == "Ok-Rank") {
+            //no restriction
+        }
+        else if (parent.EventType == "Rank") {
+            //All values must be unique
+            parent.MakeOptionUnique(self);
+        }
+    });
 };
 
 $(document).ready(function () {
