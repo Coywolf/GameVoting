@@ -9,6 +9,7 @@
     self.EndDate = ko.observable(data.EndDate);
     self.Creator = ko.observable(data.Creator);
     self.EventType = data.EventType;
+    self.HasVoted = ko.observable(data.HasVoted);
 
     self.MinScore = data.MinScore == undefined ? data.Options.length : data.MinScore;
     self.MaxScore = data.MaxScore == undefined ? data.Options.length : data.MaxScore;
@@ -37,10 +38,12 @@
                 voteData: ko.toJSON(self.Options)
             },
             success: function (data) {
-                console.log("woot");
-            },
-            error: function (xhr, message) {
-                console.error(message);
+                if (data.Success) {
+                    self.HasVoted(true);
+                }
+                else {
+                    console.error(data.Message);
+                }
             }
         });
     };
@@ -119,6 +122,9 @@ ko.bindingHandlers.vote = {
                     'data-value': i,
                     text: i
                 });
+                if (options.readonly()) {
+                    btn.prop("disabled", true);
+                }
                 btn.click(function () {
                     options.value($(this).attr('data-value'));
                 });
@@ -133,6 +139,15 @@ ko.bindingHandlers.vote = {
             //subscribe to the score to update the selected button
             options.value.subscribe(function (newValue) {
                 vote_selectValue(element, newValue);
+            });
+            options.readonly.subscribe(function (newValue) {
+                if (newValue) {
+                    $(element).find('.score-button').prop("disabled", true);
+                }
+                else {
+                    
+                    $(element).find('.score-button').prop("disabled", false);
+                }
             });
         }
     }  
