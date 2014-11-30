@@ -33,10 +33,14 @@
             type: 'POST',
             dataType: 'json',
             data: {
+                eventId: self.EventId,
                 voteData: ko.toJSON(self.Options)
             },
             success: function (data) {
-
+                console.log("woot");
+            },
+            error: function (xhr, message) {
+                console.error(message);
             }
         });
     };

@@ -7,6 +7,7 @@ using GameVoting.Models.DatabaseModels;
 using GameVoting.Models.ViewModels;
 using Newtonsoft.Json;
 using WebMatrix.WebData;
+using GameVoting.Helpers;
 
 namespace GameVoting.Controllers
 {
@@ -44,9 +45,10 @@ namespace GameVoting.Controllers
             using (var db = new VotingContext())
             {
                 var eventRow = db.Event.SingleOrDefault(e => e.EventId == eventId);
-                if (eventRow != null && (!eventRow.IsPrivate || eventRow.Members.Any(m => m.UserId == userId)))
+                var member = eventRow.Members.SingleOrDefault(m => m.UserId == userId);
+                if (eventRow != null && (!eventRow.IsPrivate || member != null))
                 {
-                    if (eventRow.Members.Single(m => m.UserId == userId).Votes.Any())
+                    if (member != null && member.Votes.Any())
                     {
                         //user has votes, return with their vote data
                         return JsonConvert.SerializeObject(new DetailEventViewModel(eventRow, userId));
@@ -65,7 +67,6 @@ namespace GameVoting.Controllers
         [Authorize]
         public string SubmitVote(int eventId, string voteData)
         {
-            //todo fail responses
             try
             {
                 var votes = JsonConvert.DeserializeObject<List<EventOptionViewModel>>(voteData);
@@ -80,7 +81,7 @@ namespace GameVoting.Controllers
                         member = eventRow.Members.SingleOrDefault(m => m.UserId == WebSecurity.CurrentUserId);
                         if (member == null)
                         {
-                            return "";
+                            return JsonHelpers.ErrorResponse("User is not a member of this event");
                         }
                     }
                     else
@@ -94,10 +95,10 @@ namespace GameVoting.Controllers
                         db.EventMember.Add(member);
                     }
 
-                    if (member.Votes.Any())
+                    if (member.Votes != null && member.Votes.Any())
                     {
                         //member has voted already
-                        return "";
+                        return JsonHelpers.ErrorResponse("Member has already voted");
                     }
                     //todo vote data must be valid for the event type and options
 
@@ -107,18 +108,19 @@ namespace GameVoting.Controllers
                         {
                             OptionId = vote.OptionId,
                             Member = member,
-                            Score = vote.Score.Value
+                            Score = vote.Score.Value,
+                            LastUpdatedDate = DateTime.Now
                         };
                         db.EventVote.Add(newVote);
                     }
 
                     db.SaveChanges();
-                    return "";
+                    return JsonHelpers.SuccessResponse("Votes saved");
                 }
             }
             catch (Exception e)
             {
-                return "";
+                return JsonHelpers.ErrorResponse(e.Message);
             }
         }
 
