@@ -74,10 +74,38 @@
     </div>
 }
 
-<div data-bind="foreach: Events">
-    <div class="row">
-        <div class="col-md-4">
+<table class="table table-striped">
+    <tr>
+        <th>Private</th>
+        <th>Name</th>
+        <th>Creator</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+    </tr>
+    <!-- ko foreach: Events -->
+    <tr>
+        <td data-bind="if: IsPrivate">
+            <span class="glyphicon glyphicon-lock"></span>
+        </td>
+        <td>
             <a data-bind="attr: { href: url }, text: Name"></a>
-        </div>
-    </div>
-</div>
+        </td>
+        <td>
+            <span data-bind="text: Creator"></span>
+        </td>
+        <td>
+            <span data-bind="text: StartDate"></span>
+        </td>
+        <td>
+            <!-- ko if: EndDate -->
+            <span data-bind="text: EndDate"></span>
+            <!-- /ko -->
+            <!-- ko ifnot: EndDate -->
+            <a class="btn btn-success" data-bind="attr: { href: url }">
+                Open!
+            </a>
+            <!-- /ko -->
+        </td>
+    </tr>
+    <!-- /ko -->
+</table>

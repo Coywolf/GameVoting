@@ -63,8 +63,8 @@ var EventModel = function(data) {
     self.Name = ko.observable(data.Name);
     self.TypeId = ko.observable(data.TypeId);
     self.IsPrivate = ko.observable(data.IsPrivate);
-    self.StartDate = ko.observable(data.StartDate);
-    self.EndDate = ko.observable(data.EndDate);
+    self.StartDate = ko.observable(new Date(data.StartDate).toLocaleDateString());
+    self.EndDate = ko.observable(data.EndDate ? new Date(data.EndDate).toLocaleDateString() : null);
     self.Creator = ko.observable(data.Creator);
     self.EventType = ko.observable(data.EventType);
 

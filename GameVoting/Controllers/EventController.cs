@@ -57,29 +57,38 @@ namespace GameVoting.Controllers
             using (var db = new VotingContext())
             {
                 var eventRow = db.Event.SingleOrDefault(e => e.EventId == eventId);
-                var member = eventRow.Members.SingleOrDefault(m => m.UserId == userId);
-                if (eventRow != null && (!eventRow.IsPrivate || member != null))
+                if (eventRow != null)
                 {
-                    if (member != null && member.Votes.Any())
+                    var member = eventRow.Members.SingleOrDefault(m => m.UserId == userId);
+                    if (!eventRow.IsPrivate || member != null)
                     {
-                        //user has votes, return with their vote data
-                        return JsonHelpers.SuccessResponse("", new
+                        if (member != null && member.Votes.Any())
                         {
-                            @event = new DetailEventViewModel(eventRow, userId),
-                            results = new EventResultsViewModel(eventRow)
-                        });
+                            //user has votes, return with their vote data
+                            return JsonHelpers.SuccessResponse("", new
+                                {
+                                    @event = new DetailEventViewModel(eventRow, userId),
+                                    results = new EventResultsViewModel(eventRow)
+                                });
+                        }
+                        else
+                        {
+                            return JsonHelpers.SuccessResponse("", new
+                                {
+                                    @event = new DetailEventViewModel(eventRow)
+                                });
+                        }
                     }
                     else
                     {
-                        return JsonHelpers.SuccessResponse("", new
-                        {
-                            @event = new DetailEventViewModel(eventRow)
-                        });
+                        return JsonHelpers.ErrorResponse("User is not a member of a private event.");
                     }
                 }
+                else
+                {
+                    return JsonHelpers.ErrorResponse("Event not found.");
+                }
             }
-
-            return JsonHelpers.ErrorResponse("Invalid request. Event not found or user is not a member of a private event.");
         }
 
         [Authorize]
@@ -88,15 +97,21 @@ namespace GameVoting.Controllers
             using (var db = new VotingContext())
             {
                 var eventRow = db.Event.SingleOrDefault(e => e.EventId == eventId);
-                var member = eventRow.Members.SingleOrDefault(m => m.UserId == WebSecurity.CurrentUserId);
-
-                if (eventRow != null && (!eventRow.IsPrivate || member != null))
+                if (eventRow != null)
                 {
-                    return JsonHelpers.SuccessResponse("", new EventResultsViewModel(eventRow));
+                    var member = eventRow.Members.SingleOrDefault(m => m.UserId == WebSecurity.CurrentUserId);
+                    if (!eventRow.IsPrivate || member != null)
+                    {
+                        return JsonHelpers.SuccessResponse("", new EventResultsViewModel(eventRow));
+                    }
+                    else
+                    {
+                        return JsonHelpers.ErrorResponse("User is not a member of a private event.");
+                    }
                 }
                 else
                 {
-                    return JsonHelpers.ErrorResponse("Invalid request. Event not found or user is not a member of a private event.");
+                    return JsonHelpers.ErrorResponse("Event not found.");
                 }
             }
         }
@@ -164,6 +179,35 @@ namespace GameVoting.Controllers
 
         [HttpPost]
         [Authorize]
+        public string CloseEvent(int eventId)
+        {
+            try
+            {
+                using (var db = new VotingContext())
+                {
+                    var eventRow = db.Event.Single(e => e.EventId == eventId);
+
+                    if (eventRow.CreatedBy == WebSecurity.CurrentUserId)
+                    {
+                        eventRow.EndDate = DateTime.Now;
+                        db.SaveChanges();
+
+                        return JsonHelpers.SuccessResponse("", eventRow.EndDate);
+                    }
+                    else
+                    {
+                        return JsonHelpers.ErrorResponse("Only the creator of an event may close it.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return JsonHelpers.ErrorResponse(e.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
         public string CreateEvent(string data)
         {
             try
@@ -204,7 +248,7 @@ namespace GameVoting.Controllers
                     }
 
                     //make sure the creator is added on a private event
-                    if (model.IsPrivate && !model.Members.Any(m => m == WebSecurity.CurrentUserId))
+                    if (model.IsPrivate && model.Members.All(m => m != WebSecurity.CurrentUserId))
                     {
                         var creatorMember = new EventMember
                         {

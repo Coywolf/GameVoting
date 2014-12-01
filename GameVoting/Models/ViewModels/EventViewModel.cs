@@ -18,6 +18,7 @@ namespace GameVoting.Models.ViewModels
 
         public string Creator { get; set; }
         public string EventType { get; set; }
+        public string TypeDescription { get; set; }
                 
         public EventViewModel(Event e)
         {
@@ -31,6 +32,7 @@ namespace GameVoting.Models.ViewModels
 
             Creator = e.Creator.UserName;
             EventType = e.Type.Name;
+            TypeDescription = e.Type.Description;
         }
         public EventViewModel() { }
     }
@@ -46,6 +48,7 @@ namespace GameVoting.Models.ViewModels
         public int? MinScore { get; set; }
         public int? MaxScore { get; set; }
         public bool HasVoted { get; set; }
+        public bool CanClose { get; set; }
 
         public List<EventOptionViewModel> Options { get; set; }
         public List<UserViewModel> Members { get; set; }
@@ -56,6 +59,7 @@ namespace GameVoting.Models.ViewModels
             MinScore = e.Type.MinScore;
             MaxScore = e.Type.MaxScore;
             HasVoted = false;
+            CanClose = false;
 
             var defaultScore = e.Type.Name == "Favorite" ? 0 : (int?)null;
 
@@ -67,6 +71,7 @@ namespace GameVoting.Models.ViewModels
             : this(e)
         {
             HasVoted = true;
+            CanClose = UserId == CreatedBy;
 
             var options = Options.OrderBy(o => o.OptionId).ToList();
             var votes = e.Members.Single(m => m.UserId == UserId).Votes.OrderBy(v => v.Option.OptionId).ToList();
@@ -113,7 +118,7 @@ namespace GameVoting.Models.ViewModels
                     optionResult.Score += vote.Score;
                     if (ignoreZeroes && optionResult.Score == 0)
                     {
-                        optionResult.Weight = 0;
+                        optionResult.Weight--;
                     }
                 }
 

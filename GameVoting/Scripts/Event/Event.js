@@ -9,7 +9,9 @@
     self.EndDate = ko.observable(data.EndDate);
     self.Creator = ko.observable(data.Creator);
     self.EventType = data.EventType;
+    self.TypeDescription = data.TypeDescription;
     self.HasVoted = ko.observable(data.HasVoted);
+    self.CanClose = data.CanClose;
 
     self.MinScore = data.MinScore == undefined ? data.Options.length : data.MinScore;
     self.MaxScore = data.MaxScore == undefined ? data.Options.length : data.MaxScore;
@@ -54,6 +56,25 @@
                             }
                         }
                     });
+                }
+                else {
+                    console.error(data.Message);
+                }
+            }
+        });
+    };
+
+    self.CloseEvent = function() {
+        $.ajax({
+            url: '/Event/CloseEvent',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                eventId: self.EventId
+            },
+            success: function (data) {
+                if (data.Success) {
+                    self.EndDate(data.Payload);
                 }
                 else {
                     console.error(data.Message);

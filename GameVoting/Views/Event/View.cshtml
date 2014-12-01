@@ -6,18 +6,26 @@
 }
 <div class="jumbotron">
     <h1>Voting</h1>
-    <p></p>
+    <p data-bind="text: TypeDescription"></p>
 </div>
 
 <div data-bind="with: Results">
-    <div data-bind="foreach: Options">
-        <div class="row">
-            <div class="col-md-4" data-bind="text: Name"></div>
-            <div class="col-md-4">
-                <span data-bind="text: Score"></span>
-                <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="visible: Weight == 0"></span>
-            </div>            
+    <div class="panel panel-default">
+        <div class="panel-heading">Results</div>
+        <div class="panel-body" data-bind="foreach: Options">
+            <div class="row">
+                <div class="col-md-4" data-bind="text: Name"></div>
+                <div class="col-md-4">
+                    <span data-bind="text: Score"></span>
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="visible: Weight <= 0"></span>
+                </div>            
+            </div>
         </div>
+        <!-- ko if: $parent.CanClose && !$parent.EndDate() -->
+        <div class="panel-footer">
+            <button class="btn btn-danger" data-bind="click: $parent.CloseEvent">Close Event</button>
+        </div>
+        <!-- /ko -->
     </div>
 </div>
 
