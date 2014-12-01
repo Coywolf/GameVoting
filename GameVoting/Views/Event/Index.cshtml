@@ -32,7 +32,7 @@
                             <select id="type-select" class="form-control" data-bind="value: TypeId">
                                 <option value=""></option>
 
-                                <!-- ko template: {foreach: $parent.EventTypes, afterRender: $parent.TypeListInit} -->
+                                <!-- ko foreach: {data: $parent.EventTypes, afterRender: $parent.TypeListInit} -->
                                 <option data-bind="text: name, value: id"></option>
                                 <!-- /ko -->
                             </select>
@@ -42,7 +42,7 @@
                             <select id="member-select" class="form-control" multiple>
                                 <option value=""></option>
 
-                                <!-- ko template: {foreach: $parent.Users, afterRender: $parent.MemberListInit} -->
+                                <!-- ko foreach: {data: $parent.Users, afterRender: $parent.MemberListInit} -->
                                 <option data-bind="text: name, value: id"></option>
                                 <!-- /ko -->
                             </select>

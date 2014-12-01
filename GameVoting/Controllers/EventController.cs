@@ -16,6 +16,8 @@ namespace GameVoting.Controllers
         //Return list of events for main page
         public string GetEventData()
         {
+            //todo check logged in for member events
+
             var userId = WebSecurity.CurrentUserId;
 
             //todo paginate or otherwise limit results
@@ -51,16 +53,33 @@ namespace GameVoting.Controllers
                     if (member != null && member.Votes.Any())
                     {
                         //user has votes, return with their vote data
-                        return JsonConvert.SerializeObject(new DetailEventViewModel(eventRow, userId));
+                        return JsonConvert.SerializeObject(new
+                        {
+                            @event = new DetailEventViewModel(eventRow, userId),
+                            results = new EventResultsViewModel(eventRow)
+                        });
                     }
                     else
                     {
-                        return JsonConvert.SerializeObject(new DetailEventViewModel(eventRow));
+                        return JsonConvert.SerializeObject(new
+                        {
+                            @event = new DetailEventViewModel(eventRow)
+                        });
                     }
                 }
             }
 
             return "";
+        }
+
+        [Authorize]
+        public string GetEventResults(int eventId)
+        {
+            using (var db = new VotingContext())
+            {
+                var eventRow = db.Event.Single(e => e.EventId == eventId);
+                return JsonConvert.SerializeObject(new EventResultsViewModel(eventRow));
+            }
         }
 
         [HttpPost]

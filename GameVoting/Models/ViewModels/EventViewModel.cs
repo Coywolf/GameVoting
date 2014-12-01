@@ -92,4 +92,36 @@ namespace GameVoting.Models.ViewModels
         }
         public DetailEventViewModel(){ }
     }
+
+    public class EventResultsViewModel
+    {
+        public List<EventOptionResultViewModel> Options { get; set; }
+
+        public EventResultsViewModel(Event e)
+        {
+            Options = new List<EventOptionResultViewModel>();
+
+            var eventType = e.Type.Name;
+            var ignoreZeroes = eventType == "Ok" || eventType == "Ok-Rank";
+
+            foreach (var option in e.Options)
+            {
+                var optionResult = new EventOptionResultViewModel(option.Name);
+
+                foreach (var vote in option.Votes)
+                {
+                    optionResult.Score += vote.Score;
+                    if (ignoreZeroes && optionResult.Score == 0)
+                    {
+                        optionResult.Weight = 0;
+                    }
+                }
+
+                Options.Add(optionResult);
+            }
+
+            Options.Sort();
+            Options.Reverse();
+        }
+    }
 }

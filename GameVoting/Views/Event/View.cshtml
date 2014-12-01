@@ -9,6 +9,18 @@
     <p>explanation goes here</p>
 </div>
 
+<div data-bind="with: Results">
+    <div data-bind="foreach: Options">
+        <div class="row">
+            <div class="col-md-4" data-bind="text: Name"></div>
+            <div class="col-md-4">
+                <span data-bind="text: Score"></span>
+                <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="visible: Weight == 0"></span>
+            </div>            
+        </div>
+    </div>
+</div>
+
 <div data-bind="foreach: Options">
     <div class="row">
         <div class="col-md-4" data-bind="text: Name"></div>

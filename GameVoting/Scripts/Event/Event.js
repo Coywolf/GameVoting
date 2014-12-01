@@ -14,6 +14,8 @@
     self.MinScore = data.MinScore == undefined ? data.Options.length : data.MinScore;
     self.MaxScore = data.MaxScore == undefined ? data.Options.length : data.MaxScore;
 
+    self.Results = ko.observable();
+
     self.Options = $.map(data.Options, function (o) {
         return new OptionModel(o, self);
     });
@@ -40,6 +42,16 @@
             success: function (data) {
                 if (data.Success) {
                     self.HasVoted(true);
+                    $.ajax({
+                        url: '/Event/GetEventResults',
+                        dataType: 'json',
+                        data: {
+                            eventId: self.EventId
+                        },
+                        success: function (results) {
+                            self.Results(results)
+                        }
+                    });
                 }
                 else {
                     console.error(data.Message);
@@ -89,7 +101,11 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                ko.applyBindings(new ViewModel(data));
+                var model = new ViewModel(data.event);
+                if (data.results) {
+                    model.Results(data.results);
+                }
+                ko.applyBindings(model);
             }
         });
     }

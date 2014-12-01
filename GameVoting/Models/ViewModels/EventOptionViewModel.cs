@@ -20,4 +20,31 @@ namespace GameVoting.Models.ViewModels
         }
         public EventOptionViewModel(){ }
     }
+
+    public class EventOptionResultViewModel : IComparable<EventOptionResultViewModel>
+    {
+        public string Name { get; set; }
+        public int Score { get; set; }
+        public int Weight { get; set; }
+
+        public EventOptionResultViewModel(string name)
+        {
+            Name = name;
+            Score = 0;
+            Weight = 1;
+        }
+
+        public EventOptionResultViewModel() { }
+
+        public int CompareTo(EventOptionResultViewModel other)
+        {
+            var weightCompare = this.Weight.CompareTo(other.Weight);
+            if (weightCompare == 0)
+            {
+                return this.Score.CompareTo(other.Score);
+            }
+
+            return weightCompare;
+        }
+    }
 }

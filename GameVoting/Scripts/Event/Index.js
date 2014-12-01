@@ -7,28 +7,36 @@
 
     self.Events = ko.observableArray();
     self.NewEvent = ko.observable(new EventModel({}));
-    self.TypeListInit = function () {
-        var typeElement = $('#type-select').first();
-        typeElement.chosen({
-            width: "100%",
-            placeholder_text_single: "Event Type"
-        });        
+    self.TypeListInit = function (elements, data) {
+        //i hate this if check, there has to be a more elegant way
+        //but i need this to only happen after everything is rendered. +1 for the blank option
+        if ($('#type-select').children().length == self.EventTypes().length + 1) {
+            var typeElement = $('#type-select').first();
+            typeElement.chosen({
+                width: "100%",
+                placeholder_text_single: "Event Type"
+            });
+        }
     };
-    self.MemberListInit = function () {
-        var memberElement = $('#member-select').first();
-        memberElement.chosen({
-            width: "100%",
-            placeholder_text_multiple: "Members (Optional)"
-        });
-        //change event to update the Members observable
-        memberElement.on('change', function (ev, params) {
-            if (params.selected) {
-                self.NewEvent().Members.push(params.selected);
-            }
-            if (params.deselected) {
-                self.NewEvent().Members.remove(params.deselected);
-            }
-        });
+    self.MemberListInit = function (elements, data) {
+        //i hate this if check, there has to be a more elegant way
+        //but i need this to only happen after everything is rendered. +1 for the blank option
+        if ($('#member-select').children().length == self.Users().length + 1) {
+            var memberElement = $('#member-select').first();
+            memberElement.chosen({
+                width: "100%",
+                placeholder_text_multiple: "Members (Optional)"
+            });
+            //change event to update the Members observable
+            memberElement.on('change', function (ev, params) {
+                if (params.selected) {
+                    self.NewEvent().Members.push(params.selected);
+                }
+                if (params.deselected) {
+                    self.NewEvent().Members.remove(params.deselected);
+                }
+            });
+        }
     };
 
     self.CreateEvent = function() {
