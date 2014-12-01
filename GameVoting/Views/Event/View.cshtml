@@ -6,7 +6,7 @@
 }
 <div class="jumbotron">
     <h1>Voting</h1>
-    <p>explanation goes here</p>
+    <p></p>
 </div>
 
 <div data-bind="with: Results">
@@ -27,6 +27,7 @@
         <div class="col-md-8" data-bind="vote: {value: Score, min: $parent.MinScore, max: $parent.MaxScore, readonly: $parent.HasVoted}"></div>
     </div>
 </div>
+
 <!-- ko ifnot: HasVoted -->
 <button class="btn btn-primary" data-bind="click: Submit">Submit</button>
 <!-- /ko -->

@@ -48,8 +48,9 @@
             },
             dataType: 'json',
             success: function (data) {
-                console.log(window.location);
-                window.location.href = window.location.origin + '/Event/View/' + data.EventId;
+                if (data.Success) {
+                    window.location.href = window.location.origin + '/Event/View/' + data.Payload.EventId;
+                }
             }
         });
     };
@@ -122,33 +123,35 @@ $(document).ready(function () {
         url: '/Event/GetEventData',
         dataType: 'json',
         success: function (data) {
-            model.EventTypes($.map(data.eventTypes, function (e) {
-                return {
-                    id: e.TypeId,
-                    name: e.Name
-                };
-            }));
-            model.Users($.map(data.users, function (u) {
-                return {
-                    id: u.UserId,
-                    name: u.UserName
-                };
-            }));
-            model.OptionSets($.map(data.optionSets, function (os) {
-                return {
-                    id: os.OptionSetId,
-                    name: os.Name,
-                    options: $.map(os.Options, function (o) {
-                        return {
-                            id: o.OptionId,
-                            name: o.Name
-                        }
-                    })
-                };
-            }));
-            model.Events($.map(data.events, function(e) {
-                return new EventModel(e);
-            }));
+            if (data.Success) {
+                model.EventTypes($.map(data.Payload.eventTypes, function (e) {
+                    return {
+                        id: e.TypeId,
+                        name: e.Name
+                    };
+                }));
+                model.Users($.map(data.Payload.users, function (u) {
+                    return {
+                        id: u.UserId,
+                        name: u.UserName
+                    };
+                }));
+                model.OptionSets($.map(data.Payload.optionSets, function (os) {
+                    return {
+                        id: os.OptionSetId,
+                        name: os.Name,
+                        options: $.map(os.Options, function (o) {
+                            return {
+                                id: o.OptionId,
+                                name: o.Name
+                            }
+                        })
+                    };
+                }));
+                model.Events($.map(data.Payload.events, function (e) {
+                    return new EventModel(e);
+                }));
+            }
         }
     });
 });

@@ -49,7 +49,9 @@
                             eventId: self.EventId
                         },
                         success: function (results) {
-                            self.Results(results)
+                            if (results.Success) {
+                                self.Results(results.Payload);
+                            }
                         }
                     });
                 }
@@ -101,16 +103,21 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                var model = new ViewModel(data.event);
-                if (data.results) {
-                    model.Results(data.results);
+                if (data.Success) {
+                    var model = new ViewModel(data.Payload.event);
+                    if (data.Payload.results) {
+                        model.Results(data.Payload.results);
+                    }
+                    ko.applyBindings(model);
                 }
-                ko.applyBindings(model);
+                else {
+                    window.location = "/";
+                }
             }
         });
     }
     else {
-        //todo url parse error, redirect to index?
+        window.location = "/";
     }
 });
 

@@ -16,25 +16,35 @@ namespace GameVoting.Controllers
         //Return list of events for main page
         public string GetEventData()
         {
-            //todo check logged in for member events
-
-            var userId = WebSecurity.CurrentUserId;
-
             //todo paginate or otherwise limit results
-
-            using (var db = new VotingContext())
+            try
             {
-                var publicEvents = db.Event.Where(e => !e.IsPrivate);
-                var memberEvents = db.EventMember.Where(m => m.UserId == userId).Select(m => m.Event);
+                using (var db = new VotingContext())
+                {
+                    var publicEvents = db.Event.Where(e => !e.IsPrivate);
+                    IEnumerable<Event> memberEvents;
+                    if (WebSecurity.IsAuthenticated)
+                    {
+                        memberEvents = db.EventMember.Where(m => m.UserId == WebSecurity.CurrentUserId).Select(m => m.Event);
+                    }
+                    else
+                    {
+                        memberEvents = new List<Event>();
+                    }
 
-                var events = publicEvents.Union(memberEvents).OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
+                    var events = publicEvents.Union(memberEvents).OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
 
-                //static data
-                var eventTypes = db.EventType.OrderBy(t => t.Name).ToList().Select(t => new EventTypeViewModel(t));
-                var users = db.UserProfile.OrderBy(u => u.UserName).ToList().Select(u => new UserViewModel(u));
-                var optionSets = db.OptionSet.OrderBy(o => o.Name).ToList().Select(o => new OptionSetViewModel(o));
-                
-                return JsonConvert.SerializeObject(new { events, eventTypes, users, optionSets });
+                    //static data
+                    var eventTypes = db.EventType.OrderBy(t => t.Name).ToList().Select(t => new EventTypeViewModel(t));
+                    var users = db.UserProfile.OrderBy(u => u.UserName).ToList().Select(u => new UserViewModel(u));
+                    var optionSets = db.OptionSet.OrderBy(o => o.Name).ToList().Select(o => new OptionSetViewModel(o));
+
+                    return JsonHelpers.SuccessResponse("", new { events, eventTypes, users, optionSets });
+                }
+            }
+            catch (Exception e)
+            {
+                return JsonHelpers.ErrorResponse(e.Message);
             }
         }
 
@@ -53,7 +63,7 @@ namespace GameVoting.Controllers
                     if (member != null && member.Votes.Any())
                     {
                         //user has votes, return with their vote data
-                        return JsonConvert.SerializeObject(new
+                        return JsonHelpers.SuccessResponse("", new
                         {
                             @event = new DetailEventViewModel(eventRow, userId),
                             results = new EventResultsViewModel(eventRow)
@@ -61,7 +71,7 @@ namespace GameVoting.Controllers
                     }
                     else
                     {
-                        return JsonConvert.SerializeObject(new
+                        return JsonHelpers.SuccessResponse("", new
                         {
                             @event = new DetailEventViewModel(eventRow)
                         });
@@ -69,7 +79,7 @@ namespace GameVoting.Controllers
                 }
             }
 
-            return "";
+            return JsonHelpers.ErrorResponse("Invalid request. Event not found or user is not a member of a private event.");
         }
 
         [Authorize]
@@ -77,8 +87,17 @@ namespace GameVoting.Controllers
         {
             using (var db = new VotingContext())
             {
-                var eventRow = db.Event.Single(e => e.EventId == eventId);
-                return JsonConvert.SerializeObject(new EventResultsViewModel(eventRow));
+                var eventRow = db.Event.SingleOrDefault(e => e.EventId == eventId);
+                var member = eventRow.Members.SingleOrDefault(m => m.UserId == WebSecurity.CurrentUserId);
+
+                if (eventRow != null && (!eventRow.IsPrivate || member != null))
+                {
+                    return JsonHelpers.SuccessResponse("", new EventResultsViewModel(eventRow));
+                }
+                else
+                {
+                    return JsonHelpers.ErrorResponse("Invalid request. Event not found or user is not a member of a private event.");
+                }
             }
         }
 
@@ -199,12 +218,12 @@ namespace GameVoting.Controllers
                     db.SaveChanges();
                     db.Entry<Event>(newEvent).Reload();
                     
-                    return JsonConvert.SerializeObject(new { newEvent.EventId });
+                    return JsonHelpers.SuccessResponse("", new { newEvent.EventId });
                 }
             }
             catch (Exception e)
             {
-                return JsonConvert.SerializeObject(new { EventId = 0 });
+                return JsonHelpers.ErrorResponse(e.Message);
             }
         }
 
