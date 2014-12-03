@@ -32,10 +32,10 @@
 <div data-bind="foreach: Options">
     <div class="row">
         <div class="col-md-4" data-bind="text: Name"></div>
-        <div class="col-md-8" data-bind="vote: {value: Score, min: $parent.MinScore, max: $parent.MaxScore, readonly: $parent.HasVoted}"></div>
+        <div class="col-md-8" data-bind="vote: { value: Score, min: $parent.MinScore, max: $parent.MaxScore, readonly: $parent.CanVote }"></div>
     </div>
 </div>
 
-<!-- ko ifnot: HasVoted -->
+<!-- ko ifnot: CanVote -->
 <button class="btn btn-primary" data-bind="click: Submit">Submit</button>
 <!-- /ko -->

@@ -13,6 +13,10 @@
     self.HasVoted = ko.observable(data.HasVoted);
     self.CanClose = data.CanClose;
 
+    self.CanVote = ko.computed(function() {
+        return self.HasVoted() || self.EndDate();
+    });
+
     self.MinScore = data.MinScore == undefined ? data.Options.length : data.MinScore;
     self.MaxScore = data.MaxScore == undefined ? data.Options.length : data.MaxScore;
 
