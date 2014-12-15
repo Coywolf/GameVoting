@@ -148,6 +148,11 @@ namespace GameVoting.Controllers
                         db.EventMember.Add(member);
                     }
 
+                    if (eventRow.EndDate != null)
+                    {
+                        return JsonHelpers.ErrorResponse("This event has closed");
+                    }
+
                     if (member.Votes != null && member.Votes.Any())
                     {
                         //member has voted already

@@ -25,6 +25,9 @@
     self.Options = $.map(data.Options, function (o) {
         return new OptionModel(o, self);
     });
+    self.Members = $.map(data.Members, function (m) {
+        return new MemberModel(m);
+    });
     self.MakeOptionUnique = function (option, replaceWith) {
         var score = option.Score();
 
@@ -113,6 +116,13 @@ self.OptionModel = function (data, parent) {
             parent.MakeOptionUnique(self);
         }
     });
+};
+
+var MemberModel = function (data) {
+    var self = this;
+
+    self.UserId = data.UserId;
+    self.UserName = ko.observable(data.UserName);
 };
 
 $(document).ready(function () {
