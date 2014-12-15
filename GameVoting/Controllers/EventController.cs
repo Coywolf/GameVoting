@@ -158,8 +158,13 @@ namespace GameVoting.Controllers
                         //member has voted already
                         return JsonHelpers.ErrorResponse("Member has already voted");
                     }
-                    //todo vote data must be valid for the event type and options
 
+                    var validateError = eventRow.ValidateVotes(votes);
+                    if (!String.IsNullOrEmpty(validateError))
+                    {
+                        return JsonHelpers.ErrorResponse(validateError);
+                    }
+                    
                     foreach (var vote in votes)
                     {
                         var newVote = new EventVote
