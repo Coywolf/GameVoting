@@ -101,6 +101,7 @@ namespace GameVoting.Models.ViewModels
     public class EventResultsViewModel
     {
         public List<EventOptionResultViewModel> Options { get; set; }
+        public bool ShowWeights { get; set; }
 
         public EventResultsViewModel(Event e)
         {
@@ -108,6 +109,7 @@ namespace GameVoting.Models.ViewModels
 
             var eventType = e.Type.Name;
             var ignoreZeroes = eventType == "Ok" || eventType == "Ok-Rank";
+            ShowWeights = ignoreZeroes;
 
             foreach (var option in e.Options)
             {

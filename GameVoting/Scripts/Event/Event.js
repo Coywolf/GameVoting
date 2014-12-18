@@ -13,14 +13,14 @@
     self.HasVoted = ko.observable(data.HasVoted);
     self.CanClose = data.CanClose;
 
-    self.CanVote = ko.computed(function() {
+    self.CanVote = ko.pureComputed(function() {
         return self.HasVoted() || self.EndDate();
     });
 
     self.MinScore = data.MinScore == undefined ? data.Options.length : data.MinScore;
     self.MaxScore = data.MaxScore == undefined ? data.Options.length : data.MaxScore;
 
-    self.Results = ko.observable();
+    self.Results = ko.observable().extend({ resultsChart: "results-chart" });
 
     self.Options = $.map(data.Options, function (o) {
         return new OptionModel(o, self);
@@ -91,7 +91,7 @@
     };
 };
 
-self.OptionModel = function (data, parent) {
+var OptionModel = function (data, parent) {
     var self = this;
 
     self.OptionId = data.OptionId;
@@ -125,35 +125,34 @@ var MemberModel = function (data) {
     self.UserName = ko.observable(data.UserName);
 };
 
+var debug;
+var debug2;
 $(document).ready(function () {
     var splitUrl = window.location.href.split('/');
-    var eventId = splitUrl[splitUrl.length - 1];  //get the last element, which should be the id
-
+    var eventArg = splitUrl[splitUrl.length - 1];  //get the last element, which should be the id
+    
     //make sure this is a valid number
-    if (!isNaN(eventId)) {
-        $.ajax({
-            url: '/Event/GetEvent',
-            data: {
-                eventId: eventId
-            },
-            dataType: 'json',
-            success: function (data) {
-                if (data.Success) {
-                    var model = new ViewModel(data.Payload.event);
-                    if (data.Payload.results) {
-                        model.Results(data.Payload.results);
-                    }
-                    ko.applyBindings(model);
+    $.ajax({
+        url: '/Event/GetEvent',
+        data: {
+            eventArg: eventArg
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (data.Success) {
+                var model = new ViewModel(data.Payload.event);
+                debug2 = model;
+                if (data.Payload.results) {
+                    model.Results(data.Payload.results);
+                    debug = data.Payload.results;
                 }
-                else {
-                    window.location = "/";
-                }
+                ko.applyBindings(model);
             }
-        });
-    }
-    else {
-        window.location = "/";
-    }
+            else {
+                window.location = "/";
+            }
+        }
+    });
 });
 
 vote_selectValue = function (element, value) {
@@ -210,3 +209,70 @@ ko.bindingHandlers.vote = {
         }
     }  
 };
+
+ko.extenders.resultsChart = function (target, selector) {
+    target.subscribe(function (nv) {
+        //initialization might need a delay. this is relying on the 'with' binding in the html happening before this subscription
+        if(target.chart === undefined) {
+            //initialize chart
+            var chartOptions = {
+                chart: {
+                    renderTo: selector,
+                    type: 'column'
+                },
+                title: {
+                    text: null
+                },
+                xAxis: {
+                    categories: $.map(nv.Options, function(option) { return option.Name; })
+                },
+                yAxis: [{
+                        title: {
+                            text: 'Scores'
+                        }
+                    }],
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        grouping: false
+                    }
+                },
+                series: [{
+                        name: 'Score',
+                        data: $.map(nv.Options, function(option) { return option.Score; }),
+                        legendIndex: 0
+                    }]
+            };
+            
+            if(nv.ShowWeights) {
+                chartOptions.yAxis.push({
+                    title: {
+                        text: 'Weights'
+                    },
+                    opposite: true
+                });
+                chartOptions.series[0].pointPadding = 0.2;
+                chartOptions.series.unshift({
+                    name: 'Weight',
+                    data: $.map(nv.Options, function(option) { return option.Weight; }),
+                    yAxis: 1,
+                    pointPadding: 0.0,
+                    legendIndex: 1
+                });
+            }
+            
+            target.chart = new Highcharts.Chart(chartOptions);
+        }
+        else {
+            //update chart
+            target.chart.xAxis[0].setCategories($.map(nv.Options, function (option) { return option.Name; }), false);
+            target.chart.series[0].setData($.map(nv.Options, function(option) { return option.Weight; }), false);
+            target.chart.series[1].setData($.map(nv.Options, function (option) { return option.Score; }), false);
+            target.chart.redraw();
+        }
+    });
+
+    return target;
+}

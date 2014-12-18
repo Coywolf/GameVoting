@@ -95,7 +95,7 @@ var EventModel = function(data) {
         self.Options.remove(option);
     };
 
-    self.url = "/Event/View/" + self.EventId;
+    self.url = "/Event/View/" + self.Name();
 };
 
 var OptionModel = function(data) {

@@ -66,10 +66,11 @@ namespace GameVoting.Models.DatabaseModels
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "One Night Ultimate Werewolf" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Resistance: Avalon" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Saboteur" });
-            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Masquerade" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Mascarade" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Lifeboat" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Skulls and Roses" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Ultimate Werewolf" });
+            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Coup" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "No Game" });
 
             base.Seed(context);
