@@ -127,7 +127,21 @@ namespace GameVoting.Models.ViewModels
                 Options.Add(optionResult);
             }
 
+            //shift all weights up so that all weights are at a minimum of zero
+            //this is to display better on the chart
+            var minWeight = Options.Min(o => o.Weight);
+            if (minWeight < 0)
+            {
+                var addWeight = Math.Abs(minWeight);
+                foreach (var option in Options)
+                {
+                    option.Weight += addWeight;
+                }
+            }
+
+            //sort by weight then by score
             Options.Sort();
+            //descending
             Options.Reverse();
         }
     }
