@@ -13,6 +13,16 @@
     self.HasVoted = ko.observable(data.HasVoted);
     self.CanClose = data.CanClose;
 
+    self.Title = ko.pureComputed(function() {
+
+    });
+    self.Subtitle = ko.pureComputed(function () {
+
+    });
+    self.Description = ko.pureComputed(function () {
+
+    });
+
     self.CanVote = ko.pureComputed(function() {
         return self.HasVoted() || self.EndDate();
     });
@@ -230,7 +240,10 @@ ko.extenders.resultsChart = function (target, selector) {
                         title: {
                             text: 'Scores'
                         }
-                    }],
+                }],
+                legend: {
+                    enabled: false
+                },
                 tooltip: {
                     shared: true
                 },
@@ -253,6 +266,7 @@ ko.extenders.resultsChart = function (target, selector) {
                     },
                     opposite: true
                 });
+                chartOptions.legend.enabled = true;
                 chartOptions.series[0].pointPadding = 0.2;
                 chartOptions.series.unshift({
                     name: 'Weight',

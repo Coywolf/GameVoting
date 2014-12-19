@@ -20,3 +20,12 @@ h1.center {
 li.strong-option {
     font-weight: bold;
 }
+
+.member-list {
+    background-color: #EEEEEE;
+    border-radius: 4px;
+}
+
+.member-list ul {
+    padding-left: 20px;
+}

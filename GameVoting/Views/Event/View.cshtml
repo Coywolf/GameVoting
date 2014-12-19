@@ -4,18 +4,16 @@
 @section scripts{
     @Scripts.Render("~/bundles/Event");
 }
-<div class="jumbotron">
-    <h1>Voting</h1>
-    <p data-bind="text: TypeDescription"></p>
-</div>
+
+<h1>Voting</h1>
+<p data-bind="text: TypeDescription"></p>
 
 <div class="row">
     <div class="col-md-10">
-        <div>
-            <h3>Results</h3>
-            <div id="results-chart"></div>
-        </div>
-
+        <h3>Results</h3>
+        <div id="results-chart"></div>
+        
+        <h3>Voting</h3>
         <div data-bind="foreach: Options">
             <div class="row">
                 <div class="col-md-4" data-bind="text: Name"></div>
@@ -28,10 +26,10 @@
         <!-- /ko -->
     </div>
 
-    <div class="col-md-2">
-        <h3>Members</h3>
-        <div data-bind="foreach: Members">
-            <p data-bind="text: UserName"></p>
-        </div>
+    <div class="col-md-2 member-list">
+        <h3>Members <span class="glyphicon glyphicon-lock" data-bind="visible: IsPrivate"></span></h3>
+        <ul data-bind="foreach: Members">
+            <li data-bind="text: UserName"></li>
+        </ul>
     </div>
 </div>
