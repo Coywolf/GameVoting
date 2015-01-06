@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using GameVoting.Hubs;
 using GameVoting.Models.DatabaseModels;
 using GameVoting.Models.ViewModels;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using WebMatrix.WebData;
 using GameVoting.Helpers;
@@ -49,7 +51,7 @@ namespace GameVoting.Controllers
         }
         
         //Return data for a single event, for voting
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public string GetEvent(int eventId)
         {
             var userId = WebSecurity.CurrentUserId;
@@ -101,7 +103,7 @@ namespace GameVoting.Controllers
             }
         }
 
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public string GetEventResults(int eventId)
         {
             using (var db = new VotingContext())
@@ -127,7 +129,7 @@ namespace GameVoting.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public string SubmitVote(int eventId, string voteData)
         {
             try
@@ -188,6 +190,9 @@ namespace GameVoting.Controllers
                     }
 
                     db.SaveChanges();
+
+                    var eventHubContext = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    eventHubContext.Clients.Group(eventId.ToString()).UpdateResults(new EventResultsViewModel(eventRow));
                     return JsonHelpers.SuccessResponse("Votes saved");
                 }
             }
@@ -198,7 +203,7 @@ namespace GameVoting.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public string CloseEvent(int eventId)
         {
             try
@@ -229,7 +234,7 @@ namespace GameVoting.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public string CreateEvent(string data)
         {
             try
@@ -301,7 +306,7 @@ namespace GameVoting.Controllers
         }
 
         //Event page, for voting
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public new ActionResult View(string id)
         {
             if (id == null)

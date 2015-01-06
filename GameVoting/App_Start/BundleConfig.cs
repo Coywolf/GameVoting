@@ -28,6 +28,7 @@ namespace GameVoting
                         "~/Scripts/Event/Index.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/Event").Include(
+                        "~/Scripts/jquery.signalR-{version}.js",
                         "~/Scripts/highcharts-custom.js",
                         "~/Scripts/Event/Event.js"));
             #endregion

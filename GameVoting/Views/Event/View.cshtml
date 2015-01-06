@@ -3,6 +3,7 @@
 }
 @section scripts{
     @Scripts.Render("~/bundles/Event");
+    <script src="/signalr/hubs"></script>
 }
 
 <h1><span data-bind="text: Title"></span>  <small data-bind="text: Subtitle"></small></h1>
@@ -27,9 +28,11 @@
     </div>
 
     <div class="col-md-2 info-panel">
-        <h3 data-bind="visible: IsCreator">Controls</h3>
+        <!-- ko if: IsCreator -->
+        <h3>Controls</h3>
         <button class="btn btn-danger btn-block" data-bind="disable: EndDate(), click: CloseEvent">Close</button>
         <button class="btn btn-primary btn-block" data-bind="disable: true">Add Member</button>
+        <!-- /ko -->
 
         <h3>Members <span class="glyphicon glyphicon-lock" data-bind="visible: IsPrivate"></span></h3>
         <ul data-bind="foreach: Members, visible: ShowMembers">

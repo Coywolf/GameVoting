@@ -117,8 +117,8 @@ namespace GameVoting.Models.ViewModels
             Options = new List<EventOptionResultViewModel>();
 
             var eventType = e.Type.Name;
-            var ignoreZeroes = eventType == "Ok" || eventType == "Ok-Rank";
-            ShowWeights = ignoreZeroes;
+            var weightZeroes = eventType == "Ok" || eventType == "Ok-Rank";
+            ShowWeights = weightZeroes;
 
             foreach (var option in e.Options)
             {
@@ -127,7 +127,7 @@ namespace GameVoting.Models.ViewModels
                 foreach (var vote in option.Votes)
                 {
                     optionResult.Score += vote.Score;
-                    if (ignoreZeroes && optionResult.Score == 0)
+                    if (weightZeroes && vote.Score == 0)
                     {
                         optionResult.Weight--;
                     }

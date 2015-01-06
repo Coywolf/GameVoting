@@ -35,6 +35,16 @@
     self.MaxScore = data.MaxScore == undefined ? data.Options.length : data.MaxScore;
 
     self.Results = ko.observable().extend({ resultsChart: "results-chart" });
+    var resultSubscription = self.Results.subscribe(function () {
+        $.connection.hub.qs = { "eventId": self.EventId };
+        $.connection.eventHub.client.UpdateResults = function(results) {
+            self.Results(results);
+        };
+        $.connection.hub.start();
+        
+        //remove the subscription, so this will only fire once.
+        resultSubscription.dispose();
+    });
 
     self.Options = $.map(data.Options, function (o) {
         return new OptionModel(o, self);

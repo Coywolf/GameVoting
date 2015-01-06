@@ -31,7 +31,7 @@ namespace GameVoting.Models.ViewModels
         {
             Name = name;
             Score = 0;
-            Weight = 1;
+            Weight = 0;
         }
 
         public EventOptionResultViewModel() { }
