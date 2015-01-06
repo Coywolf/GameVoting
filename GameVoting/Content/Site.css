@@ -21,11 +21,11 @@ li.strong-option {
     font-weight: bold;
 }
 
-.member-list {
+.info-panel {
     background-color: #EEEEEE;
     border-radius: 4px;
 }
 
-.member-list ul {
+.info-panel ul {
     padding-left: 20px;
 }

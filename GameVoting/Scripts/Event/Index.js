@@ -39,7 +39,8 @@
         }
     };
 
-    self.CreateEvent = function() {
+    self.CreateEvent = function () {
+        self.NewEvent().StartDate(new Date());
         $.ajax({
             url: '/Event/CreateEvent',
             type: 'POST',
@@ -63,7 +64,7 @@ var EventModel = function(data) {
     self.Name = ko.observable(data.Name);
     self.TypeId = ko.observable(data.TypeId);
     self.IsPrivate = ko.observable(data.IsPrivate);
-    self.StartDate = ko.observable(new Date(data.StartDate).toLocaleDateString());
+    self.StartDate = ko.observable(data.StartDate ? new Date(data.StartDate).toLocaleDateString() : null);
     self.EndDate = ko.observable(data.EndDate ? new Date(data.EndDate).toLocaleDateString() : null);
     self.Creator = ko.observable(data.Creator);
     self.EventType = ko.observable(data.EventType);
@@ -95,7 +96,7 @@ var EventModel = function(data) {
         self.Options.remove(option);
     };
 
-    self.url = "/Event/View/" + self.Name();
+    self.url = "/Event/View/" + self.EventId;
 };
 
 var OptionModel = function(data) {

@@ -55,10 +55,10 @@ namespace GameVoting.Models.DatabaseModels
             //}
 
             //Add Event Types
-            context.EventType.Add(new EventType() { Name = "Favorite", Description = "Pick your favorite option from those available", MinScore = 0, MaxScore = 1 });
-            context.EventType.Add(new EventType() { Name = "Ok", Description = "Mark all options that you are ok with.", MinScore = 0, MaxScore = 1 });
-            context.EventType.Add(new EventType() { Name = "Ok-Rank", Description = "Mark all options that you are ok with, and for each, provide a ranking.", MinScore = 0, MaxScore = 3 });
-            context.EventType.Add(new EventType() { Name = "Rank", Description = "Provide a unique rank for all options.", MinScore = 1, MaxScore = null });
+            context.EventType.Add(new EventType() { Name = "Favorite", Description = "Pick your favorite option from those available. Results are a simple sum of scores.", MinScore = 0, MaxScore = 1 });
+            context.EventType.Add(new EventType() { Name = "Ok", Description = "Mark all options that you are ok with. Results combine a weighting and sum of scores. Marking '0' for an option reduces its overall weight.", MinScore = 0, MaxScore = 1 });
+            context.EventType.Add(new EventType() { Name = "Ok-Rank", Description = "Mark all options that you are ok with, and for each, provide a ranking. Results combine a weighting and sum of scores. Marking '0' for an option reduces its overall weight.", MinScore = 0, MaxScore = 3 });
+            context.EventType.Add(new EventType() { Name = "Rank", Description = "Provide a unique rank for all options. Results are a simple sum of scores.", MinScore = 1, MaxScore = null });
 
             //Option Sets
             var lunchGames = new OptionSet() { Name = "Lunch Games" };

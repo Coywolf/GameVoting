@@ -48,7 +48,7 @@ namespace GameVoting.Models.ViewModels
         public int? MinScore { get; set; }
         public int? MaxScore { get; set; }
         public bool HasVoted { get; set; }
-        public bool CanClose { get; set; }
+        public bool IsCreator { get; set; }
 
         public List<EventOptionViewModel> Options { get; set; }
         public List<UserViewModel> Members { get; set; }
@@ -59,19 +59,28 @@ namespace GameVoting.Models.ViewModels
             MinScore = e.Type.MinScore;
             MaxScore = e.Type.MaxScore;
             HasVoted = false;
-            CanClose = false;
+            IsCreator = false;
 
             var defaultScore = e.Type.Name == "Favorite" ? 0 : (int?)null;
 
             Options = e.Options.Select(o => new EventOptionViewModel(o, defaultScore)).OrderBy(o => o.Name).ToList();
-            Members = e.Members.Select(m => new UserViewModel(m)).OrderBy(u => u.UserName).ToList();
+
+            if (!IsPrivate && EndDate != null)
+            {
+                //do not return the members of an open, public event
+                Members = e.Members.Select(m => new UserViewModel(m)).OrderBy(u => u.UserName).ToList();
+            }
+            else
+            {
+                Members = new List<UserViewModel>();
+            }
         }
 
         public DetailEventViewModel(Event e, int UserId)
             : this(e)
         {
             HasVoted = true;
-            CanClose = UserId == CreatedBy;
+            IsCreator = UserId == CreatedBy;
 
             var options = Options.OrderBy(o => o.OptionId).ToList();
             var votes = e.Members.Single(m => m.UserId == UserId).Votes.OrderBy(v => v.Option.OptionId).ToList();

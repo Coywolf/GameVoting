@@ -11,16 +11,20 @@
     self.EventType = data.EventType;
     self.TypeDescription = data.TypeDescription;
     self.HasVoted = ko.observable(data.HasVoted);
-    self.CanClose = data.CanClose;
+    self.IsCreator = data.IsCreator;
 
     self.Title = ko.pureComputed(function() {
-
+        return self.Name();
     });
     self.Subtitle = ko.pureComputed(function () {
-
+        var str = (new Date(self.StartDate)).toLocaleDateString();
+        if(self.EndDate()) {
+            str = str + " - " + (new Date(self.EndDate())).toLocaleDateString();
+        }
+        return str;
     });
     self.Description = ko.pureComputed(function () {
-
+        return self.EventType + " - " + self.TypeDescription;
     });
 
     self.CanVote = ko.pureComputed(function() {
@@ -37,6 +41,9 @@
     });
     self.Members = $.map(data.Members, function (m) {
         return new MemberModel(m);
+    });
+    self.ShowMembers = ko.pureComputed(function() {
+        return self.IsPrivate() || self.EndDate();
     });
     self.MakeOptionUnique = function (option, replaceWith) {
         var score = option.Score();
@@ -91,7 +98,7 @@
             },
             success: function (data) {
                 if (data.Success) {
-                    self.EndDate(data.Payload);
+                    location.reload();
                 }
                 else {
                     console.error(data.Message);
@@ -145,7 +152,7 @@ $(document).ready(function () {
     $.ajax({
         url: '/Event/GetEvent',
         data: {
-            eventArg: eventArg
+            eventId: eventArg
         },
         dataType: 'json',
         success: function (data) {
@@ -282,8 +289,15 @@ ko.extenders.resultsChart = function (target, selector) {
         else {
             //update chart
             target.chart.xAxis[0].setCategories($.map(nv.Options, function (option) { return option.Name; }), false);
-            target.chart.series[0].setData($.map(nv.Options, function(option) { return option.Weight; }), false);
-            target.chart.series[1].setData($.map(nv.Options, function (option) { return option.Score; }), false);
+            
+            //not expecting this value to change with an update. This is based on chart type
+            if (nv.ShowWeights) {
+                target.chart.series[0].setData($.map(nv.Options, function(option) { return option.Weight; }), false);
+                target.chart.series[1].setData($.map(nv.Options, function(option) { return option.Score; }), false);
+            }
+            else {
+                target.chart.series[0].setData($.map(nv.Options, function(option) { return option.Score; }), false);
+            }
             target.chart.redraw();
         }
     });

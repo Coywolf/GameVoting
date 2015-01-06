@@ -50,18 +50,13 @@ namespace GameVoting.Controllers
         
         //Return data for a single event, for voting
         [Authorize]
-        public string GetEvent(string eventArg)
+        public string GetEvent(int eventId)
         {
             var userId = WebSecurity.CurrentUserId;
 
-            int eventId;
-            var useId = Int32.TryParse(eventArg, out eventId);
-
             using (var db = new VotingContext())
             {
-                var eventRow = useId ? 
-                    db.Event.SingleOrDefault(e => e.EventId == eventId) :
-                    db.Event.SingleOrDefault(e => e.Name == eventArg);
+                var eventRow = db.Event.SingleOrDefault(e => e.EventId == eventId);
 
                 if (eventRow != null)
                 {
@@ -212,17 +207,19 @@ namespace GameVoting.Controllers
                 {
                     var eventRow = db.Event.Single(e => e.EventId == eventId);
 
-                    if (eventRow.CreatedBy == WebSecurity.CurrentUserId)
+                    if (eventRow.EndDate != null)
                     {
-                        eventRow.EndDate = DateTime.Now;
-                        db.SaveChanges();
-
-                        return JsonHelpers.SuccessResponse("", eventRow.EndDate);
+                        return JsonHelpers.ErrorResponse("Event is already closed");
                     }
-                    else
+                    if (eventRow.CreatedBy != WebSecurity.CurrentUserId)
                     {
                         return JsonHelpers.ErrorResponse("Only the creator of an event may close it.");
                     }
+
+                    eventRow.EndDate = DateTime.Now;
+                    db.SaveChanges();
+
+                    return JsonHelpers.SuccessResponse("", eventRow.EndDate);
                 }
             }
             catch (Exception e)

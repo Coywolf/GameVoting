@@ -5,8 +5,8 @@
     @Scripts.Render("~/bundles/Event");
 }
 
-<h1>Voting</h1>
-<p data-bind="text: TypeDescription"></p>
+<h1><span data-bind="text: Title"></span>  <small data-bind="text: Subtitle"></small></h1>
+<p data-bind="text: Description"></p>
 
 <div class="row">
     <div class="col-md-10">
@@ -26,10 +26,15 @@
         <!-- /ko -->
     </div>
 
-    <div class="col-md-2 member-list">
+    <div class="col-md-2 info-panel">
+        <h3 data-bind="visible: IsCreator">Controls</h3>
+        <button class="btn btn-danger btn-block" data-bind="disable: EndDate(), click: CloseEvent">Close</button>
+        <button class="btn btn-primary btn-block" data-bind="disable: true">Add Member</button>
+
         <h3>Members <span class="glyphicon glyphicon-lock" data-bind="visible: IsPrivate"></span></h3>
-        <ul data-bind="foreach: Members">
+        <ul data-bind="foreach: Members, visible: ShowMembers">
             <li data-bind="text: UserName"></li>
         </ul>
+        <p data-bind="visible: !ShowMembers()">This event is still in progress.</p>
     </div>
 </div>
