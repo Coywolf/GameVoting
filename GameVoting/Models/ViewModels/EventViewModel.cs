@@ -111,10 +111,12 @@ namespace GameVoting.Models.ViewModels
     {
         public List<EventOptionResultViewModel> Options { get; set; }
         public bool ShowWeights { get; set; }
+        public int NumberOfVotes { get; set; }
 
         public EventResultsViewModel(Event e)
         {
             Options = new List<EventOptionResultViewModel>();
+            NumberOfVotes = 0;
 
             var eventType = e.Type.Name;
             var weightZeroes = eventType == "Ok" || eventType == "Ok-Rank";
@@ -123,6 +125,7 @@ namespace GameVoting.Models.ViewModels
             foreach (var option in e.Options)
             {
                 var optionResult = new EventOptionResultViewModel(option.Name);
+                int curNumVotes = 0;
 
                 foreach (var vote in option.Votes)
                 {
@@ -131,9 +134,15 @@ namespace GameVoting.Models.ViewModels
                     {
                         optionResult.Weight--;
                     }
+
+                    curNumVotes++;
                 }
 
                 Options.Add(optionResult);
+                if (curNumVotes > NumberOfVotes)
+                {
+                    NumberOfVotes = curNumVotes;
+                }
             }
 
             //shift all weights up so that all weights are at a minimum of zero

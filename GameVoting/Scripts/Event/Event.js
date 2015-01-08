@@ -45,6 +45,14 @@
         //remove the subscription, so this will only fire once.
         resultSubscription.dispose();
     });
+    self.VoteCount = ko.pureComputed(function() {
+        if(self.Results()) {
+            return "(" + self.Results().NumberOfVotes + " votes)";
+        }
+        else {
+            return "";
+        }
+    });
 
     self.Options = $.map(data.Options, function (o) {
         return new OptionModel(o, self);
