@@ -31,11 +31,16 @@
         <!-- ko if: IsCreator -->
         <h3>Controls</h3>
         <button class="btn btn-danger btn-block" data-bind="disable: EndDate(), click: CloseEvent">Close</button>
-        <button class="btn btn-primary btn-block" data-bind="disable: true">Add Member</button>
+        <button class="btn btn-default btn-block" data-bind="visible: IsPrivate() && !EndDate(), click: AddMember">Add Member</button>
+        <div style="display: none" data-bind="slideVisible: AddingMembers">
+            <select id="member-select" multiple>
+                <option value=""></option>
+            </select>
+        </div>
         <!-- /ko -->
 
         <h3>Members <span class="glyphicon glyphicon-lock" data-bind="visible: IsPrivate"></span></h3>
-        <ul data-bind="foreach: Members, visible: ShowMembers">
+        <ul style="display: none" data-bind="foreach: Members, visible: ShowMembers">
             <li data-bind="text: UserName"></li>
         </ul>
         <p data-bind="visible: !ShowMembers()">This event is still in progress.</p>

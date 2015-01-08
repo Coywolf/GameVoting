@@ -116,6 +116,17 @@
             }
         });
     };
+
+    self.AddingMembers = ko.observable(false);
+    self.AddMember = function() {
+        if(self.AddingMembers()) {
+            //submit selected members
+            self.AddingMembers(false);
+        }
+        else {
+            self.AddingMembers(true);
+        }
+    };
 };
 
 var OptionModel = function (data, parent) {
@@ -237,10 +248,10 @@ ko.bindingHandlers.vote = {
     }  
 };
 
-ko.extenders.resultsChart = function (target, selector) {
-    target.subscribe(function (nv) {
+ko.extenders.resultsChart = function(target, selector) {
+    target.subscribe(function(nv) {
         //initialization might need a delay. this is relying on the 'with' binding in the html happening before this subscription
-        if(target.chart === undefined) {
+        if (target.chart === undefined) {
             //initialize chart
             var chartOptions = {
                 chart: {
@@ -254,9 +265,9 @@ ko.extenders.resultsChart = function (target, selector) {
                     categories: $.map(nv.Options, function(option) { return option.Name; })
                 },
                 yAxis: [{
-                        title: {
-                            text: 'Scores'
-                        }
+                    title: {
+                        text: 'Scores'
+                    }
                 }],
                 legend: {
                     enabled: false
@@ -270,13 +281,13 @@ ko.extenders.resultsChart = function (target, selector) {
                     }
                 },
                 series: [{
-                        name: 'Score',
-                        data: $.map(nv.Options, function(option) { return option.Score; }),
-                        legendIndex: 0
-                    }]
+                    name: 'Score',
+                    data: $.map(nv.Options, function(option) { return option.Score; }),
+                    legendIndex: 0
+                }]
             };
-            
-            if(nv.ShowWeights) {
+
+            if (nv.ShowWeights) {
                 chartOptions.yAxis.push({
                     title: {
                         text: 'Weights'
@@ -293,19 +304,17 @@ ko.extenders.resultsChart = function (target, selector) {
                     legendIndex: 1
                 });
             }
-            
+
             target.chart = new Highcharts.Chart(chartOptions);
-        }
-        else {
+        } else {
             //update chart
-            target.chart.xAxis[0].setCategories($.map(nv.Options, function (option) { return option.Name; }), false);
-            
+            target.chart.xAxis[0].setCategories($.map(nv.Options, function(option) { return option.Name; }), false);
+
             //not expecting this value to change with an update. This is based on chart type
             if (nv.ShowWeights) {
                 target.chart.series[0].setData($.map(nv.Options, function(option) { return option.Weight; }), false);
                 target.chart.series[1].setData($.map(nv.Options, function(option) { return option.Score; }), false);
-            }
-            else {
+            } else {
                 target.chart.series[0].setData($.map(nv.Options, function(option) { return option.Score; }), false);
             }
             target.chart.redraw();
@@ -313,4 +322,23 @@ ko.extenders.resultsChart = function (target, selector) {
     });
 
     return target;
-}
+};
+
+ko.bindingHandlers.slideVisible = {
+    update: function (element, valueAccessor, allBindings) {
+        // First get the latest data that we're bound to
+        var value = valueAccessor();
+
+        // Next, whether or not the supplied model property is observable, get its current value
+        var valueUnwrapped = ko.unwrap(value);
+
+        // Grab some more data from another binding property
+        var duration = allBindings.get('slideDuration') || 400; // 400ms is default duration unless otherwise specified
+
+        // Now manipulate the DOM element
+        if (valueUnwrapped == true)
+            $(element).slideDown(duration); // Make the element visible
+        else
+            $(element).slideUp(duration);   // Make the element invisible
+    }
+};

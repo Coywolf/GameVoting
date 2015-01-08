@@ -298,6 +298,48 @@ namespace GameVoting.Controllers
             }
         }
 
+        public string AddMember(int eventId, int userId)
+        {
+            try
+            {
+                using (var db = new VotingContext())
+                {
+                    var eventRow = db.Event.Single(e => e.EventId == eventId);
+
+                    if(WebSecurity.CurrentUserId != eventRow.CreatedBy)
+                    {
+                        return JsonHelpers.ErrorResponse("Only the event creator may add members to an event.");
+                    }
+                    if (!eventRow.IsPrivate)
+                    {
+                        return
+                            JsonHelpers.ErrorResponse(
+                                "Cannot add member to a public event. The target user will be added when they submit a vote.");
+                    }
+                    if (eventRow.EndDate != null)
+                    {
+                        return JsonHelpers.ErrorResponse("Event has already closed, cannot add new members.");
+                    }
+
+                    var newMember = new EventMember
+                    {
+                        Event = eventRow,
+                        UserId = userId,
+                        JoinedDate = DateTime.Now
+                    };
+                    db.EventMember.Add(newMember);
+
+                    db.SaveChanges();
+
+                    return JsonHelpers.SuccessResponse("New member has been added");
+                }
+            }
+            catch (Exception e)
+            {
+                return JsonHelpers.ErrorResponse(e.Message);
+            }
+        }
+
         #region Page ActionResults
         //Main page, the list of events
         public ActionResult Index()

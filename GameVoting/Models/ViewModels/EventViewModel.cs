@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using GameVoting.Models.DatabaseModels;
+using WebMatrix.WebData;
 
 namespace GameVoting.Models.ViewModels
 {
@@ -59,15 +60,15 @@ namespace GameVoting.Models.ViewModels
             MinScore = e.Type.MinScore;
             MaxScore = e.Type.MaxScore;
             HasVoted = false;
-            IsCreator = false;
+            IsCreator = WebSecurity.CurrentUserId == e.CreatedBy;
 
             var defaultScore = e.Type.Name == "Favorite" ? 0 : (int?)null;
 
             Options = e.Options.Select(o => new EventOptionViewModel(o, defaultScore)).OrderBy(o => o.Name).ToList();
 
-            if (!IsPrivate && EndDate != null)
+            if (IsPrivate || EndDate != null)
             {
-                //do not return the members of an open, public event
+                //return members only if the event is private or closed
                 Members = e.Members.Select(m => new UserViewModel(m)).OrderBy(u => u.UserName).ToList();
             }
             else
@@ -80,7 +81,6 @@ namespace GameVoting.Models.ViewModels
             : this(e)
         {
             HasVoted = true;
-            IsCreator = UserId == CreatedBy;
 
             var options = Options.OrderBy(o => o.OptionId).ToList();
             var votes = e.Members.Single(m => m.UserId == UserId).Votes.OrderBy(v => v.Option.OptionId).ToList();

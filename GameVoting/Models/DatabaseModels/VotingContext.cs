@@ -33,8 +33,8 @@ namespace GameVoting.Models.DatabaseModels
         }
     }
 
-    public class VotingContextInitializer 
-        : DropCreateDatabaseIfModelChanges<VotingContext>
+    public class VotingContextInitializer
+        : CreateDatabaseIfNotExists<VotingContext>
     {
         protected override void Seed(VotingContext context)
         {
@@ -70,7 +70,6 @@ namespace GameVoting.Models.DatabaseModels
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Lifeboat" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Skulls and Roses" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Ultimate Werewolf" });
-            context.Option.Add(new Option() { OptionSet = lunchGames, Name = "Coup" });
             context.Option.Add(new Option() { OptionSet = lunchGames, Name = "No Game" });
 
             base.Seed(context);

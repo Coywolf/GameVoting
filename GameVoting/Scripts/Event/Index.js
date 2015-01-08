@@ -145,7 +145,7 @@ $(document).ready(function () {
                             return {
                                 id: o.OptionId,
                                 name: o.Name
-                            }
+                            };
                         })
                     };
                 }));
