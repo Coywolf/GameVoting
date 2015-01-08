@@ -18,11 +18,11 @@
         <div data-bind="foreach: Options">
             <div class="row">
                 <div class="col-md-4" data-bind="text: Name"></div>
-                <div class="col-md-8" data-bind="vote: { value: Score, min: $parent.MinScore, max: $parent.MaxScore, readonly: $parent.CanVote }"></div>
+                <div class="col-md-8" data-bind="vote: { value: Score, min: $parent.MinScore, max: $parent.MaxScore, enable: $parent.CanVote }"></div>
             </div>
         </div>
 
-        <!-- ko ifnot: CanVote -->
+        <!-- ko if: CanVote -->
         <button class="btn btn-primary" data-bind="click: Submit">Submit</button>
         <!-- /ko -->
     </div>
@@ -39,10 +39,10 @@
         </div>
         <!-- /ko -->
 
-        <h3>Members <span class="glyphicon glyphicon-lock" data-bind="visible: IsPrivate"></span></h3>
+        <h3>Members <span style="display: none" class="glyphicon glyphicon-lock" data-bind="visible: IsPrivate"></span></h3>
         <ul style="display: none" data-bind="foreach: Members, visible: ShowMembers">
             <li data-bind="text: UserName"></li>
         </ul>
-        <p data-bind="visible: !ShowMembers()">This event is still in progress.</p>
+        <p style="display: none" data-bind="visible: !ShowMembers()">This event is still in progress.</p>
     </div>
 </div>

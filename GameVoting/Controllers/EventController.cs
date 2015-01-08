@@ -141,12 +141,22 @@ namespace GameVoting.Controllers
                     var eventRow = db.Event.Single(e => e.EventId == eventId);
                     EventMember member;
 
+                    if (eventRow.EndDate != null)
+                    {
+                        return JsonHelpers.ErrorResponse("Cannot vote on a closed event.");
+                    }
+                    var validateError = eventRow.ValidateVotes(votes);
+                    if (!String.IsNullOrEmpty(validateError))
+                    {
+                        return JsonHelpers.ErrorResponse(validateError);
+                    }
+
                     if (eventRow.IsPrivate)
                     {
                         member = eventRow.Members.SingleOrDefault(m => m.UserId == WebSecurity.CurrentUserId);
                         if (member == null)
                         {
-                            return JsonHelpers.ErrorResponse("User is not a member of this event");
+                            return JsonHelpers.ErrorResponse("User is not a member of this event.");
                         }
                     }
                     else
@@ -160,21 +170,10 @@ namespace GameVoting.Controllers
                         db.EventMember.Add(member);
                     }
 
-                    if (eventRow.EndDate != null)
-                    {
-                        return JsonHelpers.ErrorResponse("This event has closed");
-                    }
-
                     if (member.Votes != null && member.Votes.Any())
                     {
                         //member has voted already
                         return JsonHelpers.ErrorResponse("Member has already voted");
-                    }
-
-                    var validateError = eventRow.ValidateVotes(votes);
-                    if (!String.IsNullOrEmpty(validateError))
-                    {
-                        return JsonHelpers.ErrorResponse(validateError);
                     }
                     
                     foreach (var vote in votes)
@@ -223,6 +222,9 @@ namespace GameVoting.Controllers
 
                     eventRow.EndDate = DateTime.Now;
                     db.SaveChanges();
+
+                    var eventHubContext = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    eventHubContext.Clients.Group(eventId.ToString()).Refresh();
 
                     return JsonHelpers.SuccessResponse("", eventRow.EndDate);
                 }

@@ -28,7 +28,7 @@
     });
 
     self.CanVote = ko.pureComputed(function() {
-        return self.HasVoted() || self.EndDate();
+        return !self.HasVoted() && !self.EndDate();
     });
 
     self.MinScore = data.MinScore == undefined ? data.Options.length : data.MinScore;
@@ -39,6 +39,9 @@
         $.connection.hub.qs = { "eventId": self.EventId };
         $.connection.eventHub.client.UpdateResults = function(results) {
             self.Results(results);
+        };
+        $.connection.eventHub.client.Refresh = function() {
+            location.reload();
         };
         $.connection.hub.start();
         
@@ -225,7 +228,7 @@ ko.bindingHandlers.vote = {
                     'data-value': i,
                     text: i
                 });
-                if (options.readonly()) {
+                if (!options.enable()) {
                     btn.prop("disabled", true);
                 }
                 btn.click(function () {
@@ -243,13 +246,12 @@ ko.bindingHandlers.vote = {
             options.value.subscribe(function (newValue) {
                 vote_selectValue(element, newValue);
             });
-            options.readonly.subscribe(function (newValue) {
+            options.enable.subscribe(function (newValue) {
                 if (newValue) {
-                    $(element).find('.score-button').prop("disabled", true);
+                    $(element).find('.score-button').prop("disabled", false);
                 }
                 else {
-                    
-                    $(element).find('.score-button').prop("disabled", false);
+                    $(element).find('.score-button').prop("disabled", true);
                 }
             });
         }
