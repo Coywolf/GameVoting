@@ -77,7 +77,10 @@ namespace GameVoting.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, propertyValues: new {CreatedDate = DateTime.Now});
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, propertyValues: new
+                        {
+                            CreatedDate = DateTime.Now
+                        });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Event");
                 }
