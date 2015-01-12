@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -300,7 +302,27 @@ namespace GameVoting.Controllers
             }
         }
 
-        public string AddMember(int eventId, int userId)
+        //return all users that are not already members for the given event
+        public string GetUsersForAdding(int eventId)
+        {
+            try
+            {
+                using (var db = new VotingContext())
+                {
+                    var eventRow = db.Event.Single(e => e.EventId == eventId);
+                    var users = db.UserProfile.ToList().Except(eventRow.Members.Select(m => m.User)).OrderBy(u => u.UserName).Select(u => new UserViewModel(u));
+                    return JsonHelpers.SuccessResponse("", users);
+                }
+            }
+            catch (Exception e)
+            {
+                return JsonHelpers.ErrorResponse(e.Message);
+            }
+        }
+
+        [HttpPost]
+        [System.Web.Mvc.Authorize]
+        public string AddMembers(int eventId, List<int> memberIds)
         {
             try
             {
@@ -323,17 +345,33 @@ namespace GameVoting.Controllers
                         return JsonHelpers.ErrorResponse("Event has already closed, cannot add new members.");
                     }
 
-                    var newMember = new EventMember
+                    var existingMembers = eventRow.Members.Select(m => m.UserId).ToList();
+                    var newMembers = new List<EventMember>();
+                    foreach (var userId in memberIds)
                     {
-                        Event = eventRow,
-                        UserId = userId,
-                        JoinedDate = DateTime.Now
-                    };
-                    db.EventMember.Add(newMember);
+                        if (!existingMembers.Contains(userId))
+                        {
+                            var newMember = new EventMember
+                            {
+                                Event = eventRow,
+                                UserId = userId,
+                                JoinedDate = DateTime.Now
+                            };
+                            newMembers.Add(newMember);
+                        }
+                    }
 
+                    db.EventMember.AddRange(newMembers);
                     db.SaveChanges();
 
-                    return JsonHelpers.SuccessResponse("New member has been added");
+                    var context = ((IObjectContextAdapter) db).ObjectContext;
+                    foreach (var member in newMembers)
+                    {
+                        context.Detach(member);
+                        db.EventMember.Find(member.UserId);
+                    }
+                    
+                    return JsonHelpers.SuccessResponse("New members have been added", eventRow.Members.Select(m => new UserViewModel(m)).OrderBy(m => m.UserName));
                 }
             }
             catch (Exception e)

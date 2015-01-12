@@ -60,9 +60,9 @@
     self.Options = $.map(data.Options, function (o) {
         return new OptionModel(o, self);
     });
-    self.Members = $.map(data.Members, function (m) {
+    self.Members = ko.observableArray($.map(data.Members, function (m) {
         return new MemberModel(m);
-    });
+    }));
     self.ShowMembers = ko.pureComputed(function() {
         return self.IsPrivate() || self.EndDate();
     });
@@ -129,13 +129,71 @@
     };
 
     self.AddingMembers = ko.observable(false);
+    self.AddMemberButtonStyle = ko.pureComputed(function() {
+        return self.AddingMembers() ? "btn-primary" : "btn-default";
+    });
+    self.Users = ko.observableArray();
+    self.NewMembers = ko.observableArray();
     self.AddMember = function() {
-        if(self.AddingMembers()) {
-            //submit selected members
-            self.AddingMembers(false);
+        if (self.AddingMembers()) {
+            $.ajax({
+                url: '/Event/AddMembers',
+                type: 'POST',
+                data: {
+                    eventId: self.EventId,
+                    memberIds: self.NewMembers()
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.Success) {
+                        self.Members($.map(result.Payload, function (m) {
+                            return new MemberModel(m);
+                        }));
+                        self.Users.removeAll();
+                        self.AddingMembers(false);
+                    }
+                }
+            });
         }
         else {
-            self.AddingMembers(true);
+            $.ajax({
+                url: '/Event/GetUsersForAdding',
+                data: {
+                    eventId: self.EventId
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if(result.Success) {
+                        self.Users($.map(result.Payload, function(u) {
+                            return {
+                                id: u.UserId,
+                                name: u.UserName
+                            };
+                        }));
+                        self.AddingMembers(true);
+                    }
+                }
+            });
+        }
+    };
+    self.AddMembersInit = function() {
+        //i hate this if check, there has to be a more elegant way
+        //but i need this to only happen after everything is rendered. +1 for the blank option
+        if ($('#member-select').children().length == self.Users().length + 1) {
+            var memberElement = $('#member-select').first();
+            memberElement.chosen({
+                width: "100%",
+                placeholder_text_multiple: "New Members"
+            });
+            //change event to update the NewMembers observable
+            memberElement.on('change', function (ev, params) {
+                if (params.selected) {
+                    self.NewMembers.push(params.selected);
+                }
+                if (params.deselected) {
+                    self.NewMembers.remove(params.deselected);
+                }
+            });
         }
     };
 };

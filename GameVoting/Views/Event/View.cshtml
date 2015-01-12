@@ -50,10 +50,14 @@
         <!-- ko if: IsCreator -->
         <h3>Controls</h3>
         <button class="btn btn-danger btn-block" data-bind="disable: EndDate(), click: CloseEvent">Close</button>
-        <button class="btn btn-default btn-block" data-bind="visible: IsPrivate() && !EndDate(), click: AddMember">Add Member</button>
-        <div style="display: none" data-bind="slideVisible: AddingMembers">
+        <button class="btn btn-block" data-bind="visible: IsPrivate() && !EndDate(), click: AddMember, css: AddMemberButtonStyle">Add Member</button>
+        <div style="display: none" data-bind="if: AddingMembers, slideVisible: AddingMembers">
             <select id="member-select" multiple>
                 <option value=""></option>
+
+                <!-- ko foreach: {data: Users, afterRender: AddMembersInit} -->
+                <option data-bind="text: name, value: id"></option>
+                <!-- /ko -->
             </select>
         </div>
         <!-- /ko -->
