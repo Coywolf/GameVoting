@@ -13,7 +13,8 @@ namespace GameVoting
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/knockout-{version}.js",
-                        "~/Scripts/chosen.jquery.js"));
+                        "~/Scripts/chosen.jquery.js",
+                        "~/Scripts/App/RandomGenerator.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",

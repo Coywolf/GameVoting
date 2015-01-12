@@ -29,3 +29,7 @@ li.strong-option {
 .info-panel ul {
     padding-left: 20px;
 }
+
+.focus-no-outline:focus {
+    outline-color: rgba(0, 0, 0, 0);
+}

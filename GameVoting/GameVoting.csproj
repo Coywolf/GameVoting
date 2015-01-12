@@ -262,6 +262,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Scripts\App\RandomGenerator.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
@@ -319,6 +320,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_NavCollapse.cshtml" />
     <Content Include="Views\Event\View.cshtml" />
+    <Content Include="Views\Shared\_RandomGenerator.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

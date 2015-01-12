@@ -1,0 +1,29 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    <li><a id="randomGenerator" class="focus-no-outline" href="#" tabindex="0">Random Numbers</a></li>
+</ul>
+
+<div id="randomGeneratorContent" style="display: none">
+    <form class="form-horizontal" style="width: 200px">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">How Many</label>
+            <div class="col-sm-6">
+                <input id="randomAmount" class="form-control" type="text" value="1"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">From</label>
+            <div class="col-sm-6">
+                <input id="randomFrom" class="form-control" type="text" value="1"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">To</label>
+            <div class="col-sm-6">
+                <input id="randomTo" class="form-control" type="text" value="10"/>
+            </div>
+        </div>
+    </form>
+
+    <button id="randomGo" class="btn btn-primary btn-block">Go</button>
+    <ol id="randomResults"></ol>
+</div>
