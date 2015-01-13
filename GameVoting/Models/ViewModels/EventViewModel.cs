@@ -119,7 +119,7 @@ namespace GameVoting.Models.ViewModels
             NumberOfVotes = 0;
 
             var eventType = e.Type.Name;
-            var weightZeroes = eventType == "Ok" || eventType == "Ok-Rank";
+            var weightZeroes = eventType == "Ok-Rank";
             ShowWeights = weightZeroes;
 
             foreach (var option in e.Options)
@@ -130,9 +130,9 @@ namespace GameVoting.Models.ViewModels
                 foreach (var vote in option.Votes)
                 {
                     optionResult.Score += vote.Score;
-                    if (weightZeroes && vote.Score == 0)
+                    if (weightZeroes && vote.Score > 0)
                     {
-                        optionResult.Weight--;
+                        optionResult.Weight++;
                     }
 
                     curNumVotes++;
@@ -147,15 +147,15 @@ namespace GameVoting.Models.ViewModels
 
             //shift all weights up so that all weights are at a minimum of zero
             //this is to display better on the chart
-            var minWeight = Options.Min(o => o.Weight);
-            if (minWeight < 0)
-            {
-                var addWeight = Math.Abs(minWeight);
-                foreach (var option in Options)
-                {
-                    option.Weight += addWeight;
-                }
-            }
+            //var minWeight = Options.Min(o => o.Weight);
+            //if (minWeight < 0)
+            //{
+            //    var addWeight = Math.Abs(minWeight);
+            //    foreach (var option in Options)
+            //    {
+            //        option.Weight += addWeight;
+            //    }
+            //}
 
             //sort by weight then by score
             Options.Sort();
