@@ -12,7 +12,7 @@ namespace GameVoting.Models.DatabaseModels
     public class VotingContext : DbContext
     {
         public VotingContext()
-            : base("DefaultConnection")
+            : base("GameVoting")
         {
         }
 
