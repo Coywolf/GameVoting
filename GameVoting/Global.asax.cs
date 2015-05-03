@@ -37,7 +37,7 @@ namespace GameVoting
             //This connection may have been initialized by seeding the database
             if (!WebSecurity.Initialized)
             {
-                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                WebSecurity.InitializeDatabaseConnection("GameVoting", "UserProfile", "UserId", "UserName", autoCreateTables: true);
             }
         }
     }
