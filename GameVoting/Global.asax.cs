@@ -9,6 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using GameVoting.Models.DatabaseModels;
 using WebMatrix.WebData;
+using System.Web.Security;
 
 namespace GameVoting
 {
@@ -38,6 +39,11 @@ namespace GameVoting
             if (!WebSecurity.Initialized)
             {
                 WebSecurity.InitializeDatabaseConnection("GameVoting", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+
+                if (!Roles.RoleExists("admin"))
+                {
+                    Roles.CreateRole("admin");
+                }
             }
         }
     }
