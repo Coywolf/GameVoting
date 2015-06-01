@@ -393,9 +393,27 @@ namespace GameVoting.Controllers
         {
             if (id == null)
             {
-                return new RedirectResult("/");
+                return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public ActionResult Latest()
+        {
+            using (var db = new VotingContext())
+            {
+                var currentUserId = WebSecurity.CurrentUserId;
+                var latestEvent = db.Event.OrderByDescending(e => e.StartDate).FirstOrDefault(e => !e.IsPrivate || e.Members.Any(m => m.UserId == currentUserId));
+
+                if(latestEvent == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("View", new {id = latestEvent.EventId});
+                }
+            }
         }
         #endregion
     }
