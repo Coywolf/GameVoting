@@ -19,6 +19,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         @Html.MenuLink("Events", "Index", "Event")
+                        @Html.MenuLink("Seven Wonders", "Index", "SevenWonders")
                         @if (Roles.IsUserInRole("admin"))
                         {
                             @Html.MenuLink("Reset Password", "ResetPassword", "Account");

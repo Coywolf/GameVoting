@@ -381,13 +381,13 @@ namespace GameVoting.Controllers
         }
 
         #region Page ActionResults
-        //Main page, the list of events
+        // Main page, the list of events
         public ActionResult Index()
         {
             return View();
         }
 
-        //Event page, for voting
+        // Event page, for voting
         [System.Web.Mvc.Authorize]
         public new ActionResult View(string id)
         {
