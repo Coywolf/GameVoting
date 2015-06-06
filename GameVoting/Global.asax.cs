@@ -29,7 +29,7 @@ namespace GameVoting
             AuthConfig.RegisterAuth();
 
             //Ensure the database is created and seeded
-            Database.SetInitializer<VotingContext>(new VotingContextInitializer());
+            Database.SetInitializer<VotingContext>(new MigrateDatabaseToLatestVersion<VotingContext, GameVoting.Migrations.Configuration>());
             using (var context = new VotingContext())
             {
                 context.Database.Initialize(false);
