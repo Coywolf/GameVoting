@@ -3,6 +3,12 @@
     ViewBag.Title = "SevenWonders_View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section scripts{
+    @Scripts.Render("~/bundles/SevenWondersView")
+}
 
-<h2>SevenWonders_View</h2>
+<div data-bind="template: 'sevenwonders-scoresheet-template'">
 
+</div>
+
+@Html.Partial("~/Views/Games/SevenWonders_ScoreSheet.cshtml")

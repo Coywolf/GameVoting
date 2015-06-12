@@ -30,6 +30,7 @@ namespace GameVoting.Models.DatabaseModels
         public int CommercialScore { get; set; }
         public int GuildScore { get; set; }
         public int ScienceScore { get; set; }
+        public int LeaderScore { get; set; }
 
         public int TotalScore   // todo: not sure what this will do
         {
@@ -41,7 +42,8 @@ namespace GameVoting.Models.DatabaseModels
                     CivicScore +
                     CommercialScore +
                     GuildScore +
-                    ScienceScore;
+                    ScienceScore +
+                    LeaderScore;
             }
         }
 

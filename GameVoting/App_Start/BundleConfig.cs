@@ -32,6 +32,18 @@ namespace GameVoting
                         "~/Scripts/jquery.signalR-{version}.js",
                         "~/Scripts/highcharts-custom.js",
                         "~/Scripts/Event/Event.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/SevenWondersIndex").Include(
+                        "~/Scripts/SevenWonders/Index.js",
+                        "~/Scripts/SevenWonders/GameModel.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/SevenWondersView").Include(
+                        "~/Scripts/SevenWonders/View.js",
+                        "~/Scripts/SevenWonders/GameModel.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/SevenWondersNew").Include(
+                        "~/Scripts/SevenWonders/New.js",
+                        "~/Scripts/SevenWonders/GameModel.js"));
             #endregion
 
             #region Styles

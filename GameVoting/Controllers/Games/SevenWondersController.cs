@@ -30,6 +30,28 @@ namespace GameVoting.Controllers
             }
         }
 
+        public string GetGame(int gameId)
+        {
+            try
+            {
+                using (var db = new VotingContext())
+                {
+                    var game = db.WondersGame.SingleOrDefault(g => g.GameId == gameId);
+
+                    if (game == null)
+                    {
+                        return JsonHelpers.ErrorResponse("Game not found");
+                    }
+
+                    return JsonHelpers.SuccessResponse("", new SevenWondersGameViewModel(game));
+                }
+            }
+            catch (Exception e)
+            {
+                return JsonHelpers.ErrorResponse(e.Message);
+            }
+        }
+
         [Authorize]
         public string GetNewGameData()
         {
@@ -53,19 +75,14 @@ namespace GameVoting.Controllers
         [Authorize]
         public string CreateGame(string data)
         {
-
-        }
-
-        public string GetGame(int gameId)
-        {
-
-        }
+            throw new NotImplementedException();
+        }        
 
         [HttpPost]
         [Authorize]
         public string DeleteGame(int gameId)
         {
-
+            throw new NotImplementedException();
         }
 
         public ActionResult Index()
@@ -79,7 +96,7 @@ namespace GameVoting.Controllers
             return View("~/Views/Games/SevenWonders_New.cshtml");
         }
 
-        public ActionResult View(string id)
+        public ActionResult Game(string id)
         {
             if (id == null)
             {

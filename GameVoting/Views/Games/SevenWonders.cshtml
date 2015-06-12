@@ -2,6 +2,29 @@
     ViewBag.Title = "Seven Wonders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section scripts{
+    @Scripts.Render("~/bundles/SevenWondersIndex")
+}
+<div class="page-header">
+    <h1>
+        Seven Wonders
+        <a class="btn btn-primary pull-right" href="/SevenWonders/New">Create</a>
+    </h1>
+</div>
 
-<h2>SevenWonders</h2>
-
+<table class="table table-striped">
+    <tr>
+        <th>Created Date</th>
+        <th></th>
+    </tr>
+    <!-- ko foreach: Games -->
+    <tr>
+        <td>
+            <span data-bind="text: CreatedDate"></span>
+        </td>
+        <td>
+            <a class="btn btn-primary" data-bind="attr: { href: url }">View</a>
+        </td>
+    </tr>
+    <!-- /ko -->
+</table>
