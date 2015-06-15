@@ -23,6 +23,8 @@ namespace GameVoting.Models.DatabaseModels
         [Required]
         public string Name { get; set; }
 
+        public int Seat { get; set; }
+
         public int MilitaryScore { get; set; }
         public int CoinScore { get; set; }
         public int WonderScore { get; set; }
@@ -32,6 +34,7 @@ namespace GameVoting.Models.DatabaseModels
         public int ScienceScore { get; set; }
         public int LeaderScore { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public int TotalScore   // todo: not sure what this will do
         {
             get
@@ -45,6 +48,7 @@ namespace GameVoting.Models.DatabaseModels
                     ScienceScore +
                     LeaderScore;
             }
+            private set { }
         }
 
         // Navigation Properties

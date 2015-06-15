@@ -10,6 +10,7 @@ namespace GameVoting.Models.ViewModels
     {
         public int GameId { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string Creator { get; set; }
 
         public List<SevenWondersPlayerViewModel> Players { get; set; }
         
@@ -17,8 +18,9 @@ namespace GameVoting.Models.ViewModels
         {
             GameId = game.GameId;
             CreatedDate = game.CreatedDate;
+            Creator = game.Creator.UserName;
 
-            Players = game.Players.Select(p => new SevenWondersPlayerViewModel(p)).ToList();
+            Players = game.Players.OrderBy(p => p.Seat).Select(p => new SevenWondersPlayerViewModel(p)).ToList();
         }
 
         public SevenWondersGameViewModel()

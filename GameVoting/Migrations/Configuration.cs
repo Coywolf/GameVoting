@@ -56,7 +56,9 @@ namespace GameVoting.Migrations
                 new WondersBoards() { Name = "Rhodes (A)" },
                 new WondersBoards() { Name = "Rhodes (B)" },
                 new WondersBoards() { Name = "Alexandria (A)" },
-                new WondersBoards() { Name = "Alexandria (B)" });
+                new WondersBoards() { Name = "Alexandria (B)" },
+                new WondersBoards() { Name = "Rome (A)" },
+                new WondersBoards() { Name = "Rome (B)" });
             
         }
     }

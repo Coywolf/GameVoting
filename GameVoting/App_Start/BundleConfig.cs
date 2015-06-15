@@ -14,6 +14,7 @@ namespace GameVoting
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/chosen.jquery.js",
+                        "~/Scripts/select2.js",
                         "~/Scripts/App/RandomGenerator.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -33,23 +34,15 @@ namespace GameVoting
                         "~/Scripts/highcharts-custom.js",
                         "~/Scripts/Event/Event.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/SevenWondersIndex").Include(
-                        "~/Scripts/SevenWonders/Index.js",
-                        "~/Scripts/SevenWonders/GameModel.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/SevenWondersView").Include(
-                        "~/Scripts/SevenWonders/View.js",
-                        "~/Scripts/SevenWonders/GameModel.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/SevenWondersNew").Include(
-                        "~/Scripts/SevenWonders/New.js",
-                        "~/Scripts/SevenWonders/GameModel.js"));
+            bundles.Add(new ScriptBundle("~/bundles/SevenWonders").Include(
+                        "~/Scripts/SevenWonders/SevenWonders.js"));
             #endregion
 
             #region Styles
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/bootstrap.css",
                         "~/Content/chosen.css",
+                        "~/Content/select2.css",
                         "~/Content/Site.css"));
             #endregion
         }

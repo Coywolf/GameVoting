@@ -3,28 +3,116 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section scripts{
-    @Scripts.Render("~/bundles/SevenWondersIndex")
+    @Scripts.Render("~/bundles/SevenWonders")
 }
+
 <div class="page-header">
+    <div class="pull-right">
+        <!-- ko ifnot: CreatingGame -->
+        <button class="btn btn-primary pull-right" data-bind="click: NewGame">Create</button>
+        <!-- /ko -->
+        <!-- ko if: CreatingGame -->
+        <button class="btn btn-primary" data-bind="click: CreateGame">Submit</button>
+        <button class="btn btn-default" data-bind="click: CancelGame">Cancel</button>
+        <!-- /ko -->
+    </div>
     <h1>
-        Seven Wonders
-        <a class="btn btn-primary pull-right" href="/SevenWonders/New">Create</a>
-    </h1>
+        Seven Wonders        
+    </h1>    
+</div>
+
+<div data-bind="with: SelectedGame">
+    <div style="overflow-x: scroll">
+        <table class="table table-condensed table-striped scoresheet">
+            <thead>
+                <tr>
+                    <th colspan="2"></th>
+                    <th colspan="8" class="header-bar"></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th class="selector">Player Name</th>
+                    <th class="selector">Board Name</th>
+
+                    <th class="military">Military</th>
+                    <th class="coin">Coin</th>
+                    <th class="wonder">Wonder</th>
+                    <th class="civic">Civic</th>
+                    <th class="commercial">Commercial</th>
+                    <th class="guild">Guild</th>
+                    <th class="science">Science</th>
+                    <th class="leader">Leader</th>
+
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody data-bind="template: {name: rowTemplate, foreach: Players}"></tbody>
+            <tfoot data-bind="if: CanAddPlayer">
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-primary" data-bind="click: AddPlayer">Add Player</button>
+                    </td>
+                    <td colspan="9"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 <table class="table table-striped">
-    <tr>
-        <th>Created Date</th>
-        <th></th>
-    </tr>
-    <!-- ko foreach: Games -->
-    <tr>
-        <td>
-            <span data-bind="text: CreatedDate"></span>
-        </td>
-        <td>
-            <a class="btn btn-primary" data-bind="attr: { href: url }">View</a>
-        </td>
-    </tr>
-    <!-- /ko -->
+    <thead>
+        <tr>
+            <th>Created Date</th>
+            <th>Creator</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Games">
+        <tr>
+            <td data-bind="text: CreatedDate"></td>
+            <td data-bind="text: Creator"></td>
+            <td>
+                <button class="btn btn-primary" data-bind="click: $parent.SelectedGame">View</button>
+            </td>
+        </tr>
+    </tbody>
 </table>
+
+<script type="text/html" id="sevenwonders-scoresheet-editrow-template">
+    <tr>
+        <td>
+            <select class="form-control" data-bind="options: $root.Users, optionsCaption: 'Select a user...', optionsText: 'name', optionsValue: 'id', select2: UserId, select2options: {tags:true}"></select>
+        </td>
+        <td>
+            <select class="form-control" data-bind="options: $root.Boards, optionsCaption: 'Select a board...', optionsText: 'name', optionsValue: 'id', select2: BoardId, select2options: {allowClear:true}"></select>
+        </td>
+
+        <td><input class="form-control input-sm" type="number" tabindex="1" data-bind="value: MilitaryScore" /></td>
+        <td><input class="form-control input-sm" type="number" tabindex="2" data-bind="value: CoinScore" /></td>
+        <td><input class="form-control input-sm" type="number" tabindex="3" data-bind="value: WonderScore" /></td>
+        <td><input class="form-control input-sm" type="number" tabindex="4" data-bind="value: CivicScore" /></td>
+        <td><input class="form-control input-sm" type="number" tabindex="5" data-bind="value: CommercialScore" /></td>
+        <td><input class="form-control input-sm" type="number" tabindex="6" data-bind="value: GuildScore" /></td>
+        <td><input class="form-control input-sm" type="number" tabindex="7" data-bind="value: ScienceScore" /></td>
+        <td><input class="form-control input-sm" type="number" tabindex="8" data-bind="value: LeaderScore" /></td>
+
+        <td class="total" data-bind="text: TotalScore"></td>
+    </tr>
+</script>
+
+<script type="text/html" id="sevenwonders-scoresheet-viewrow-template">
+    <tr>
+        <td data-bind="text: Name"></td>
+        <td data-bind="text: BoardName"></td>
+
+        <td data-bind="text: MilitaryScore"></td>
+        <td data-bind="text: CoinScore"></td>
+        <td data-bind="text: WonderScore"></td>
+        <td data-bind="text: CivicScore"></td>
+        <td data-bind="text: CommercialScore"></td>
+        <td data-bind="text: GuildScore"></td>
+        <td data-bind="text: ScienceScore"></td>
+        <td data-bind="text: LeaderScore"></td>
+
+        <td class="total" data-bind="text: TotalScore"></td>
+    </tr>
+</script>

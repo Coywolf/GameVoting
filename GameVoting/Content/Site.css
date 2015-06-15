@@ -36,104 +36,50 @@ li.strong-option {
 
 /* score sheet */
 
-.scoresheet {
-    border: 3px solid black;
+.scoresheet .header-bar {
+    background-color: #428bca;
 }
 
-.scoresheet th, .scoresheet td {
-    width: 54px;
-    height: 35px;
-    border: 2px solid black;
+.scoresheet th {
+    min-width: 60px;
 }
 
-.scoresheet .icon {
-    border-right: 3px solid black;
-    border-left: 3px solid black;
-}
-
-.scoresheet .header, .scoresheet .total {
-    font-weight: bold;
-}
-
-.scoresheet .header .icon {
-    background: url('SevenWondersSprite.png') 0px 0px/100%;
-}
-
-.scoresheet .military td {
-    /*background-color: #e4a28e;*/
-    background: #e4a28e url('SevenWondersSprite-30.png') 0px -35px/100%;
-    border-top: 3px solid black;
-}
-
-.scoresheet .military .icon {
-    background: url('SevenWondersSprite.png') 0px -35px/100%;
-}
-
-.scoresheet .coin td {
-    background: url('SevenWondersSprite-30.png') 0px -70px/100%;
-}
-
-.scoresheet .coin .icon {
-    background: url('SevenWondersSprite.png') 0px -70px/100%;
-}
-
-.scoresheet .wonder td {
-    background: url('SevenWondersSprite-30.png') 0px -105px/100%;
-}
-
-.scoresheet .wonder .icon {
-    background: url('SevenWondersSprite.png') 0px -105px/100%;
-}
-
-.scoresheet .civic td {
-    /*background-color: #abc7e4;*/
-    background: #abc7e4 url('SevenWondersSprite-30.png') 0px -140px/100%;
-}
-
-.scoresheet .civic .icon {
-    background: url('SevenWondersSprite.png') 0px -140px/100%;
-}
-
-.scoresheet .commercial td {
-    /*background-color: #e6db9b;*/
-    background: #e6db9b url('SevenWondersSprite-30.png') 0px -175px/100%;
-}
-
-.scoresheet .commercial .icon {
-    background: url('SevenWondersSprite.png') 0px -175px/100%;
-}
-
-.scoresheet .guild td {
-    /*background-color: #b99dd5;*/
-    background: #b99dd5 url('SevenWondersSprite-30.png') 0px -210px/100%;
-}
-
-.scoresheet .guild .icon {
-    background: url('SevenWondersSprite.png') 0px -210px/100%;
-}
-
-.scoresheet .science td {
-    /*background-color: #b3d894;*/
-    background: #b3d894 url('SevenWondersSprite-30.png') 0px -249px/100%;
-}
-
-.scoresheet .science .icon {
-    background: url('SevenWondersSprite.png') 0px -249px/100%;
-}
-
-.scoresheet .leader td {
-    background: url('SevenWondersSprite-30.png') 0px -284px/100%;
-    border-bottom: 3px solid black;
-}
-
-.scoresheet .leader .icon {
-    background: url('SevenWondersSprite.png') 0px -284px/100%;
+.scoresheet .selector {
+    white-space: nowrap;
+    min-width: 175px;
 }
 
 .scoresheet .total {
-    background: url('SevenWondersSprite-30.png') 0px -319px/100%;
+    font-weight: bold;
 }
 
-.scoresheet .total .icon {
-    background: url('SevenWondersSprite.png') 0px -319px/100%;
+.scoresheet .military {
+    background-color: #f2dede;
+}
+
+.scoresheet .coin {
+    
+}
+
+.scoresheet .wonder {
+}
+
+.scoresheet .civic {
+    background-color: #d9edf7;
+}
+
+.scoresheet .commercial {
+    background-color: #fcf8e3;
+}
+
+.scoresheet .guild {
+    background-color: #e9dffc;
+}
+
+.scoresheet .science {
+    background-color: #dff0d8;
+}
+
+.scoresheet .leader {
+    background-color: #f3f3f3;
 }
