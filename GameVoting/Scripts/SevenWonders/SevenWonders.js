@@ -31,7 +31,7 @@
                     self.SelectedGame(game);
                 }
                 else {
-                    // todo error
+                    alert(data.Message);
                 }
             }
         });
@@ -55,6 +55,19 @@ var GameModel = function (data) {
             return new PlayerModel(p);
         })
     );
+
+    self.TopScore = ko.pureComputed(function () {
+        var max = 0;
+        var players = self.Players();
+
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].TotalScore() > max) {
+                max = players[i].TotalScore();
+            }
+        }
+
+        return max;
+    });
 
     // existing games use the readonly template
     self.rowTemplate = data.GameId == undefined ?
@@ -84,8 +97,8 @@ var PlayerModel = function (data) {
 
     self.BoardId = ko.observable(data.BoardId);
 
-    self.Name = data.Name;
-    self.BoardName = data.BoardName;
+    self.Name = ko.observable(data.Name);
+    self.BoardName = ko.observable(data.BoardName);
 
     self.MilitaryScore = ko.observable(data.MilitaryScore).extend({numeric: 0});
     self.CoinScore = ko.observable(data.CoinScore).extend({ numeric: 0 });
@@ -184,17 +197,33 @@ ko.bindingHandlers.select2 = {
         selector.on("select2:select", function (e) {
             if (selector.attr('multiple')) {
                 value.push(e.params.data.id);
+
+                if (allBindings.has('select2name')) {
+                    allBindings.get('select2name').push(e.params.data.text);
+                }
             }
             else {
                 value(e.params.data.id);
+
+                if (allBindings.has('select2name')) {
+                    allBindings.get('select2name')(e.params.data.text);
+                }
             }
         });
         selector.on("select2:unselect", function (e) {
             if (selector.attr('multiple')) {
                 value.remove(e.params.data.id);
+
+                if (allBindings.has('select2name')) {
+                    allBindings.get('select2name').remove(e.params.data.text);
+                }
             }
             else {
                 value(null);
+
+                if (allBindings.has('select2name')) {
+                    allBindings.get('select2name')(null);
+                }
             }
         });
     },

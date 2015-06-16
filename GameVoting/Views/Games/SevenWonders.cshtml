@@ -7,17 +7,20 @@
 }
 
 <div class="page-header">
-    <div class="pull-right">
-        <!-- ko ifnot: CreatingGame -->
-        <button class="btn btn-primary pull-right" data-bind="click: NewGame">Create</button>
-        <!-- /ko -->
-        <!-- ko if: CreatingGame -->
-        <button class="btn btn-primary" data-bind="click: CreateGame">Submit</button>
-        <button class="btn btn-default" data-bind="click: CancelGame">Cancel</button>
-        <!-- /ko -->
-    </div>
+    @if (Request.IsAuthenticated) 
+    { 
+        <div class="pull-right">
+            <!-- ko ifnot: CreatingGame -->
+            <button class="btn btn-primary pull-right" data-bind="click: NewGame">Create</button>
+            <!-- /ko -->
+            <!-- ko if: CreatingGame -->
+            <button class="btn btn-primary" data-bind="click: CreateGame">Submit</button>
+            <button class="btn btn-default" data-bind="click: CancelGame">Cancel</button>
+            <!-- /ko -->
+        </div>
+    }
     <h1>
-        Seven Wonders        
+        Seven Wonders
     </h1>    
 </div>
 
@@ -29,6 +32,7 @@
                     <th colspan="2"></th>
                     <th colspan="8" class="header-bar"></th>
                     <th></th>
+                    <th class="visible-sm visible-xs"></th>
                 </tr>
                 <tr>
                     <th class="selector">Player Name</th>
@@ -44,6 +48,7 @@
                     <th class="leader">Leader</th>
 
                     <th>Total</th>
+                    <th class="visible-sm visible-xs" style="white-space:nowrap;">Player Name</th>
                 </tr>
             </thead>
             <tbody data-bind="template: {name: rowTemplate, foreach: Players}"></tbody>
@@ -53,6 +58,7 @@
                         <button class="btn btn-primary" data-bind="click: AddPlayer">Add Player</button>
                     </td>
                     <td colspan="9"></td>
+                    <td class="visible-sm visible-xs"></td>
                 </tr>
             </tfoot>
         </table>
@@ -78,12 +84,12 @@
 </table>
 
 <script type="text/html" id="sevenwonders-scoresheet-editrow-template">
-    <tr>
+    <tr data-bind="css: {success: TotalScore() > 0 && TotalScore() == $parent.TopScore()}">
         <td>
-            <select class="form-control" data-bind="options: $root.Users, optionsCaption: 'Select a user...', optionsText: 'name', optionsValue: 'id', select2: UserId, select2options: {tags:true}"></select>
+            <select class="form-control" data-bind="options: $root.Users, optionsCaption: 'Select a user...', optionsText: 'name', optionsValue: 'id', select2: UserId, select2name: Name, select2options: {tags:true}"></select>
         </td>
         <td>
-            <select class="form-control" data-bind="options: $root.Boards, optionsCaption: 'Select a board...', optionsText: 'name', optionsValue: 'id', select2: BoardId, select2options: {allowClear:true}"></select>
+            <select class="form-control" data-bind="options: $root.Boards, optionsCaption: 'Select a board...', optionsText: 'name', optionsValue: 'id', select2: BoardId, select2name: BoardName, select2options: {allowClear:true}"></select>
         </td>
 
         <td><input class="form-control input-sm" type="number" tabindex="1" data-bind="value: MilitaryScore" /></td>
@@ -96,11 +102,12 @@
         <td><input class="form-control input-sm" type="number" tabindex="8" data-bind="value: LeaderScore" /></td>
 
         <td class="total" data-bind="text: TotalScore"></td>
+        <td class="visible-sm visible-xs" data-bind="text: Name"></td>
     </tr>
 </script>
 
 <script type="text/html" id="sevenwonders-scoresheet-viewrow-template">
-    <tr>
+    <tr data-bind="css: {success: TotalScore() > 0 && TotalScore() == $parent.TopScore()}">
         <td data-bind="text: Name"></td>
         <td data-bind="text: BoardName"></td>
 
@@ -114,5 +121,6 @@
         <td data-bind="text: LeaderScore"></td>
 
         <td class="total" data-bind="text: TotalScore"></td>
+        <td class="visible-sm visible-xs" data-bind="text: Name"></td>
     </tr>
 </script>
