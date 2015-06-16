@@ -34,7 +34,6 @@ namespace GameVoting.Models.DatabaseModels
         public int ScienceScore { get; set; }
         public int LeaderScore { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public int TotalScore   // todo: not sure what this will do
         {
             get
@@ -48,7 +47,6 @@ namespace GameVoting.Models.DatabaseModels
                     ScienceScore +
                     LeaderScore;
             }
-            private set { }
         }
 
         // Navigation Properties
