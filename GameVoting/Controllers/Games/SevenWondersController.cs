@@ -84,13 +84,9 @@ namespace GameVoting.Controllers
                     return JsonHelpers.SuccessResponse("", new SevenWondersGameViewModel(newGame));
                 }
             }
-            catch (DbEntityValidationException e)
-            {
-                return JsonHelpers.ErrorResponse(e.InnerException.Message);
-            }
             catch (Exception e)
             {
-                return JsonHelpers.ErrorResponse(e.Message);
+                return JsonHelpers.ErrorResponse(e);
             }
         }        
 
