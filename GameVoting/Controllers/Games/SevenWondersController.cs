@@ -4,6 +4,7 @@ using GameVoting.Models.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -71,7 +72,7 @@ namespace GameVoting.Controllers
                             CommercialScore = player.CommercialScore,
                             GuildScore = player.GuildScore,
                             ScienceScore = player.ScienceScore,
-                            LeaderScore = player.LeaderScore                            
+                            LeaderScore = player.LeaderScore
                         };
                         db.WondersPlayer.Add(newPlayer);
                     }
@@ -82,6 +83,10 @@ namespace GameVoting.Controllers
 
                     return JsonHelpers.SuccessResponse("", new SevenWondersGameViewModel(newGame));
                 }
+            }
+            catch (DbEntityValidationException e)
+            {
+                return JsonHelpers.ErrorResponse(e.InnerException.Message);
             }
             catch (Exception e)
             {
