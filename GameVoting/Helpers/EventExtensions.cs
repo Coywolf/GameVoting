@@ -44,20 +44,20 @@ namespace GameVoting.Helpers
 
             if (votes.Any(v => v.Score < min || v.Score > max))
             {
-                try
-                {
-                    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-                    message.To.Add("michael.bush@inin.com");
-                    message.Subject = "Cheater";
-                    message.From = new System.Net.Mail.MailAddress("michael.bush@inin.com");
-                    message.Body = WebSecurity.CurrentUserName;
-                    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.inin.com");
-                    smtp.Send(message);
-                }
-                catch (Exception ex)
-                {
+                //try
+                //{
+                //    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+                //    message.To.Add("michael.bush@inin.com");
+                //    message.Subject = "Cheater";
+                //    message.From = new System.Net.Mail.MailAddress("michael.bush@inin.com");
+                //    message.Body = WebSecurity.CurrentUserName;
+                //    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.inin.com");
+                //    smtp.Send(message);
+                //}
+                //catch (Exception ex)
+                //{
                     
-                }
+                //}
 
                 return "Stop hacking the values. Bush knows who you are.";
             }
