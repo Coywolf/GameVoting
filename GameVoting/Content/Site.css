@@ -33,3 +33,53 @@ li.strong-option {
 .focus-no-outline:focus {
     outline-color: rgba(0, 0, 0, 0);
 }
+
+/* score sheet */
+
+.scoresheet .header-bar {
+    background-color: #428bca;
+}
+
+.scoresheet th {
+    min-width: 60px;
+}
+
+.scoresheet .selector {
+    white-space: nowrap;
+    min-width: 175px;
+}
+
+.scoresheet .total {
+    font-weight: bold;
+}
+
+.scoresheet .military {
+    background-color: #f2dede;
+}
+
+.scoresheet .coin {
+    
+}
+
+.scoresheet .wonder {
+}
+
+.scoresheet .civic {
+    background-color: #d9edf7;
+}
+
+.scoresheet .commercial {
+    background-color: #fcf8e3;
+}
+
+.scoresheet .guild {
+    background-color: #e9dffc;
+}
+
+.scoresheet .science {
+    background-color: #dff0d8;
+}
+
+.scoresheet .leader {
+    background-color: #f3f3f3;
+}

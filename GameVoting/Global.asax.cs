@@ -9,6 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using GameVoting.Models.DatabaseModels;
 using WebMatrix.WebData;
+using System.Web.Security;
 
 namespace GameVoting
 {
@@ -28,7 +29,7 @@ namespace GameVoting
             AuthConfig.RegisterAuth();
 
             //Ensure the database is created and seeded
-            Database.SetInitializer<VotingContext>(new VotingContextInitializer());
+            Database.SetInitializer<VotingContext>(new MigrateDatabaseToLatestVersion<VotingContext, GameVoting.Migrations.Configuration>());
             using (var context = new VotingContext())
             {
                 context.Database.Initialize(false);
@@ -37,7 +38,12 @@ namespace GameVoting
             //This connection may have been initialized by seeding the database
             if (!WebSecurity.Initialized)
             {
-                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                WebSecurity.InitializeDatabaseConnection("GameVoting", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+
+                if (!Roles.RoleExists("admin"))
+                {
+                    Roles.CreateRole("admin");
+                }
             }
         }
     }

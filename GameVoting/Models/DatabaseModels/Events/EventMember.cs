@@ -9,20 +9,20 @@ namespace GameVoting.Models.DatabaseModels
 {
     public class EventMember
     {
-        //Key
+        // Key
         [Key]
         public int MemberId { get; set; }
 
-        //Foreign Keys
+        // Foreign Keys
         [Index("IX_EventUser", 1, IsUnique = true)]
         public int EventId { get; set; }
         [Index("IX_EventUser", 2, IsUnique = true)]
         public int UserId { get; set; }
 
-        //Members
+        // Members
         public DateTime JoinedDate { get; set; }
 
-        //Navigation Properties
+        // Navigation Properties
         public virtual Event Event { get; set; }
         public virtual UserProfile User { get; set; }
         public virtual ICollection<EventVote> Votes { get; set; }

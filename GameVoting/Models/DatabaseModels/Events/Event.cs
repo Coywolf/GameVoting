@@ -9,14 +9,14 @@ namespace GameVoting.Models.DatabaseModels
 {
     public class Event
     {
-        //Key
+        // Key
         public int EventId { get; set; }
 
-        //Foreign Keys
+        // Foreign Keys
         public int CreatedBy { get; set; }
         public int TypeId { get; set; }
 
-        //Members
+        // Members
         [MaxLength(250)]
         [Required]
         public string Name { get; set; }
@@ -25,12 +25,13 @@ namespace GameVoting.Models.DatabaseModels
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        //Navigation Properties
+        // Navigation Properties
         [ForeignKey("CreatedBy")]
         public virtual UserProfile Creator { get; set; }
 
         public virtual EventType Type { get; set; }
         public virtual ICollection<EventOption> Options { get; set; }
         public virtual ICollection<EventMember> Members { get; set; }
+        public virtual ICollection<WondersGame> Games { get; set; }
     }
 }

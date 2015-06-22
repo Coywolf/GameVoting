@@ -94,6 +94,38 @@ namespace GameVoting.Controllers
             return View(model);
         }
 
+        [Authorize(Roles="admin")]
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordModel model)
+        {
+            if (!WebSecurity.UserExists(model.UserName))
+            {
+                ViewBag.StatusMessage = "User name was not found.";
+            }
+            else
+            {
+                try
+                {
+                    var token = WebSecurity.GeneratePasswordResetToken(model.UserName);
+                    WebSecurity.ResetPassword(token, model.Password);
+                }
+                catch (Exception e)
+                {
+                    ViewBag.StatusMessage = "Password reset failed due to exception: " + e.Message;
+                }
+            }
+
+            ViewBag.StatusMessage = "Password reset successful.";
+            return View();
+        }
+
         //
         // GET: /Account/Manage
 
