@@ -16,8 +16,9 @@
         });
 
         self.pages = ko.pureComputed(function () {
-            var numPages = ko.unwrap(numItems) / self.pageSize();
-            return Array.apply(null, { length: Math.ceil(numPages) }).map(function (u, i) {
+            var numPages = Math.ceil(ko.unwrap(numItems) / self.pageSize());
+
+            return Array.apply(null, { length: numPages }).map(function (u, i) {
                 var page = {
                     page: i+1
                 };
@@ -28,35 +29,45 @@
                 return page;
             });
         });
+        self.visiblePages = ko.pureComputed(function () {
+            var numPages = self.pages().length;
 
-        self.currentPage.subscribe(function (newValue) {
-            if (params.pageChanged && $.isFunction(params.pageChanged)) {
-                params.pageChanged.call(self, newValue, self.pageSize());
-            }
+            var start = Math.max(0, Math.min(self.currentPage() - 4, numPages - 7));
+            var end = Math.min(start + 7, numPages);
+
+            return self.pages().slice(start, end);
         });
+
+        var pageChanged = function () {
+            if (params.pageChanged && $.isFunction(params.pageChanged)) {
+                params.pageChanged.call(self, self.currentPage(), self.pageSize());
+            }
+        }
+        self.currentPage.subscribe(pageChanged);
+        self.pageSize.subscribe(pageChanged);
 
         self.setPage = function (page) {
             self.currentPage(page.page);
         };
 
         self.first = function () {
-            self.currentPage(0);
+            self.currentPage(1);
         };
 
         self.previous = function () {
-            if (self.currentPage() > 0) {
+            if (self.currentPage() > 1) {
                 self.currentPage(self.currentPage() - 1);
             }
         };
 
         self.next = function () {
-            if (self.currentPage() < self.pages().length - 1) {
+            if (self.currentPage() < self.pages().length) {
                 self.currentPage(self.currentPage() + 1);
             }
         };
 
         self.last = function () {
-            self.currentPage(self.pages().length-1);
+            self.currentPage(self.pages().length);
         };
     },
     template: { element: 'page-controls-template' }
