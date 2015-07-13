@@ -15,12 +15,14 @@
         <div id="results-chart"></div>
         
         <h3>Voting</h3>
-        <div data-bind="foreach: Options">
-            <div class="row">
-                <div class="col-md-4" data-bind="text: Name"></div>
-                <div class="col-md-8" data-bind="vote: { value: Score, min: $parent.MinScore, max: $parent.MaxScore, enable: $parent.CanVote }"></div>
-            </div>
-        </div>
+        <table class="table table-striped table-condensed">
+            <tbody data-bind="foreach: Options">
+                <tr>
+                    <td class="col-md-4" data-bind="text: Name"></td>
+                    <td class="col-md-9" data-bind="vote: { value: Score, min: $parent.MinScore, max: $parent.MaxScore, enable: $parent.CanVote }" style="padding: 0px inherit"></td>
+                </tr>
+            </tbody>
+        </table>
 
         <!-- ko if: CanVote -->
         <button class="btn btn-primary" data-toggle="modal" data-target="#confirmSubmitModal">Submit</button>

@@ -324,7 +324,7 @@ ko.extenders.resultsChart = function(target, selector) {
             var chartOptions = {
                 chart: {
                     renderTo: selector,
-                    type: 'column'
+                    type: 'bar'
                 },
                 title: {
                     text: null
@@ -335,18 +335,14 @@ ko.extenders.resultsChart = function(target, selector) {
                 yAxis: [{
                     title: {
                         text: 'Scores'
-                    }
+                    },
+                    allowDecimals: false
                 }],
                 legend: {
                     enabled: false
                 },
                 tooltip: {
                     shared: true
-                },
-                plotOptions: {
-                    column: {
-                        grouping: false
-                    }
                 },
                 series: [{
                     name: 'Score',
@@ -356,19 +352,10 @@ ko.extenders.resultsChart = function(target, selector) {
             };
 
             if (nv.ShowWeights) {
-                chartOptions.yAxis.push({
-                    title: {
-                        text: 'Weights'
-                    },
-                    opposite: true
-                });
                 chartOptions.legend.enabled = true;
-                chartOptions.series[0].pointPadding = 0.2;
                 chartOptions.series.unshift({
                     name: 'Weight',
                     data: $.map(nv.Options, function(option) { return option.Weight; }),
-                    yAxis: 1,
-                    pointPadding: 0.0,
                     legendIndex: 1
                 });
             }
