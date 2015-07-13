@@ -17,33 +17,38 @@ namespace GameVoting.Controllers
 {
     public class EventController : Controller
     {
-        //Return list of events for main page
+        // Return static data for the main page
         public string GetEventData()
         {
-            //todo paginate or otherwise limit results
             try
             {
                 using (var db = new VotingContext())
                 {
-                    var publicEvents = db.Event.Where(e => !e.IsPrivate);
-                    IEnumerable<Event> memberEvents;
-                    if (WebSecurity.IsAuthenticated)
-                    {
-                        memberEvents = db.EventMember.Where(m => m.UserId == WebSecurity.CurrentUserId).Select(m => m.Event);
-                    }
-                    else
-                    {
-                        memberEvents = new List<Event>();
-                    }
-
-                    var events = publicEvents.Union(memberEvents).OrderByDescending(e => e.StartDate).ToList().Select(e => new EventViewModel(e));
-
-                    //static data
                     var eventTypes = db.EventType.OrderBy(t => t.Name).ToList().Select(t => new EventTypeViewModel(t));
                     var users = db.UserProfile.OrderBy(u => u.UserName).ToList().Select(u => new UserViewModel(u));
                     var optionSets = db.OptionSet.OrderBy(o => o.Name).ToList().Select(o => new OptionSetViewModel(o));
 
-                    return JsonHelpers.SuccessResponse("", new { events, eventTypes, users, optionSets });
+                    var eventCount = db.GetEvents(WebSecurity.IsAuthenticated ? WebSecurity.CurrentUserId : (int?)null).Count();
+
+                    return JsonHelpers.SuccessResponse("", new { eventTypes, users, optionSets, eventCount });
+                }
+            }
+            catch (Exception e)
+            {
+                return JsonHelpers.ErrorResponse(e.Message);
+            }
+        }
+        
+        // Return list of events for main page
+        public string GetEvents(int page, int pageSize)
+        {
+            try
+            {
+                using (var db = new VotingContext())
+                {
+                    var events = db.GetEvents(WebSecurity.IsAuthenticated ? WebSecurity.CurrentUserId : (int?)null).Skip(page * pageSize).Take(pageSize);
+
+                    return JsonHelpers.SuccessResponse("", new { events });
                 }
             }
             catch (Exception e)

@@ -27,7 +27,8 @@ namespace GameVoting
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/Index").Include(
-                        "~/Scripts/Event/Index.js"));
+                        "~/Scripts/Event/Index.js",
+                        "~/Scripts/Components/page-controls.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/Event").Include(
                         "~/Scripts/jquery.signalR-{version}.js",

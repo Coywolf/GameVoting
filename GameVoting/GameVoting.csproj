@@ -226,6 +226,7 @@
     <Compile Include="Helpers\EventExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\JsonHelpers.cs" />
+    <Compile Include="Helpers\VotingContextExtensions.cs" />
     <Compile Include="Hubs\EventHub.cs" />
     <Compile Include="Hubs\Startup.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -277,6 +278,7 @@
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\Components\page-controls.js" />
     <Content Include="Scripts\Event\Event.js" />
     <Content Include="Scripts\Event\Index.js" />
     <Content Include="Scripts\highcharts-custom.js" />

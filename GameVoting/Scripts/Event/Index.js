@@ -4,7 +4,8 @@
     self.EventTypes = ko.observableArray();
     self.Users = ko.observableArray();
     self.OptionSets = ko.observableArray();
-
+    
+    self.EventCount = ko.observable(0);
     self.Events = ko.observableArray();
     self.NewEvent = ko.observable(new EventModel({}));
     self.TypeListInit = function (elements, data) {
@@ -52,6 +53,22 @@
                 if (data.Success) {
                     window.location.href = window.location.origin + '/Event/View/' + data.Payload.EventId;
                 }
+            }
+        });
+    };
+
+    self.GetEvents = function (page, pageSize) {
+        $.ajax({
+            url: '/Event/GetEvents',
+            dataType: 'json',
+            data: {
+                page: page-1,
+                pageSize: pageSize
+            },
+            success: function (data) {
+                self.Events($.map(data.Payload.events, function (e) {
+                    return new EventModel(e);
+                }));
             }
         });
     };
@@ -149,10 +166,11 @@ $(document).ready(function () {
                         })
                     };
                 }));
-                model.Events($.map(data.Payload.events, function (e) {
-                    return new EventModel(e);
-                }));
+                model.EventCount(data.Payload.eventCount);
             }
         }
     });
+
+    // get initial events with the default settings
+    model.GetEvents(0, 20);
 });
