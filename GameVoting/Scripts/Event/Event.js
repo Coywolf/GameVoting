@@ -344,6 +344,11 @@ ko.extenders.resultsChart = function(target, selector) {
                 tooltip: {
                     shared: true
                 },
+                plotOptions: {
+                    bar: {
+                        grouping: false
+                    }
+                },
                 series: [{
                     name: 'Score',
                     data: $.map(nv.Options, function(option) { return option.Score; }),
@@ -353,13 +358,16 @@ ko.extenders.resultsChart = function(target, selector) {
 
             if (nv.ShowWeights) {
                 chartOptions.legend.enabled = true;
+                chartOptions.series[0].pointPadding = 0.2;
                 chartOptions.series.unshift({
                     name: 'Weight',
                     data: $.map(nv.Options, function(option) { return option.Weight; }),
-                    legendIndex: 1
+                    legendIndex: 1,
+                    pointPadding: 0.0
                 });
             }
 
+            $("#"+selector).height(nv.Options.length * 60);
             target.chart = new Highcharts.Chart(chartOptions);
         } else {
             //update chart
