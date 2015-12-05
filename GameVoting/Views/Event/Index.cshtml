@@ -75,18 +75,16 @@
 }
 
 <table class="table table-striped">
-    <tr>
-        <th>Private</th>
+    <tr>        
         <th>Name</th>
         <th>Creator</th>
         <th>Start Date</th>
         <th>End Date</th>
+        <th>Private</th>
+        <th>Copy</th>
     </tr>
     <!-- ko foreach: Events -->
-    <tr>
-        <td data-bind="if: IsPrivate">
-            <span class="glyphicon glyphicon-lock"></span>
-        </td>
+    <tr>        
         <td>
             <a data-bind="attr: { href: url }, text: Name"></a>
         </td>
@@ -105,6 +103,14 @@
                 Open!
             </a>
             <!-- /ko -->
+        </td>
+        <td data-bind="if: IsPrivate" class="smallCell">
+            <span class="glyphicon glyphicon-lock"></span>
+        </td>
+        <td class="smallCell">
+            <button type="button" class="btn btn-default btn-sm pull-right" data-bind="click: $parent.CopyEvent">
+                <span class="glyphicon glyphicon-file"></span>
+            </button>
         </td>
     </tr>
     <!-- /ko -->

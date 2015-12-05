@@ -72,6 +72,46 @@
             }
         });
     };
+
+    self.CopyEvent = function (event) {
+        // get event for members and options
+        $.ajax({
+            url: '/Event/GetEvent',
+            data: {
+                eventId: event.EventId
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.Success) {
+                    // basic operations
+                    $('#createEvent').collapse('show');
+
+                    var newEvent = self.NewEvent();
+
+                    newEvent.Name(event.Name());
+
+                    newEvent.TypeId(event.TypeId());
+                    var typeElement = $('#type-select').first();
+                    typeElement.trigger("chosen:updated");
+
+                    // member and option information from the request
+                    newEvent.Options.removeAll();
+                    var eventData = data.Payload.event;
+                    for (var i = 0; i < eventData.Options.length; i++) {
+                        newEvent.Options.push(ko.observable(eventData.Options[i].Name));
+                    }
+
+                    var memberElement = $('#member-select').first();
+                    var members = eventData.Members ? $.map(eventData.Members, function (m) {
+                        return String(m.UserId);
+                    }) : [];
+                    memberElement.val(members);
+                    newEvent.Members(members);
+                    memberElement.trigger("chosen:updated")
+                }
+            }
+        });
+    }
 };
 
 var EventModel = function(data) {

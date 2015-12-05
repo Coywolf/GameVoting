@@ -83,3 +83,8 @@ li.strong-option {
 .scoresheet .leader {
     background-color: #f3f3f3;
 }
+
+td.smallCell {
+    width: 1px;
+    white-space: nowrap;
+}
