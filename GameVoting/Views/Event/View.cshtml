@@ -26,7 +26,7 @@
 
         <!-- ko if: CanVote -->
         <button class="btn btn-primary" data-toggle="modal" data-target="#confirmSubmitModal">Submit</button>
-        <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeferModal">Defer</button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeferModal">I'm not playing</button>
         <!-- /ko -->
 
         <div class="modal fade" id="confirmSubmitModal">
@@ -56,13 +56,13 @@
                         <h4 class="modal-title">Modal title</h4>
                     </div>*@
                     <div class="modal-body">
-                        <p>This action will allow you to see the results of the vote without being considered a voter.</p>
-                        <p>Deferring your vote is <strong>FINAL</strong>. You cannot take this back.</p>                        
-                        <p>Are you sure you want to defer?</p>
+                        <p>This action will allow you to see the results of the vote without being considered a voter. <strong>DO NOT</strong> use this to abstain; you will not be considered a player.</p>
+                        <p>Waiving your vote is <strong>FINAL</strong>. You cannot take this back.</p>                        
+                        <p>Are you sure you want to waive your vote?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" data-bind="click: function(){ Submit(true); }" data-dismiss="modal">Defer</button>
+                        <button type="button" class="btn btn-danger" data-bind="click: function(){ Submit(true); }" data-dismiss="modal">Waive</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
