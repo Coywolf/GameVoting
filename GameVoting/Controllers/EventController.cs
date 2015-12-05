@@ -79,7 +79,7 @@ namespace GameVoting.Controllers
                         return JsonHelpers.ErrorResponse("User is not a member of a private event.");
                     }
                     
-                    if (member != null && member.Votes.Any())
+                    if ( member != null && (member.HasDeferred || member.Votes.Any()) )
                     {
                         //current user has voted, get their votes
                         responseEvent = new DetailEventViewModel(eventRow, userId);
@@ -137,7 +137,7 @@ namespace GameVoting.Controllers
 
         [HttpPost]
         [System.Web.Mvc.Authorize]
-        public string SubmitVote(int eventId, string voteData)
+        public string SubmitVote(int eventId, string voteData, bool deferred)
         {
             try
             {
@@ -150,12 +150,16 @@ namespace GameVoting.Controllers
 
                     if (eventRow.EndDate != null)
                     {
-                        return JsonHelpers.ErrorResponse("Cannot vote on a closed event.");
+                        return JsonHelpers.ErrorResponse("Cannot vote or defer on a closed event.");
                     }
-                    var validateError = eventRow.ValidateVotes(votes);
-                    if (!String.IsNullOrEmpty(validateError))
+
+                    if (!deferred)
                     {
-                        return JsonHelpers.ErrorResponse(validateError);
+                        var validateError = eventRow.ValidateVotes(votes);
+                        if (!String.IsNullOrEmpty(validateError))
+                        {
+                            return JsonHelpers.ErrorResponse(validateError);
+                        }
                     }
 
                     if (eventRow.IsPrivate)
@@ -177,22 +181,29 @@ namespace GameVoting.Controllers
                         db.EventMember.Add(member);
                     }
 
-                    if (member.Votes != null && member.Votes.Any())
+                    if ( member.HasDeferred || ( member.Votes != null && member.Votes.Any()) )
                     {
                         //member has voted already
-                        return JsonHelpers.ErrorResponse("Member has already voted");
+                        return JsonHelpers.ErrorResponse("Member has already voted or deferred");
                     }
-                    
-                    foreach (var vote in votes)
+
+                    if (deferred)
                     {
-                        var newVote = new EventVote
+                        member.HasDeferred = true;
+                    }
+                    else
+                    {
+                        foreach (var vote in votes)
                         {
-                            OptionId = vote.OptionId,
-                            Member = member,
-                            Score = vote.Score.Value,
-                            LastUpdatedDate = DateTime.Now
-                        };
-                        db.EventVote.Add(newVote);
+                            var newVote = new EventVote
+                            {
+                                OptionId = vote.OptionId,
+                                Member = member,
+                                Score = vote.Score.Value,
+                                LastUpdatedDate = DateTime.Now
+                            };
+                            db.EventVote.Add(newVote);
+                        }
                     }
 
                     db.SaveChanges();

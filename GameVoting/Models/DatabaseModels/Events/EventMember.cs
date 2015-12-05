@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -21,6 +22,14 @@ namespace GameVoting.Models.DatabaseModels
 
         // Members
         public DateTime JoinedDate { get; set; }
+
+        private bool _hasDeferred = false;
+        [DefaultValue(false)]
+        public bool HasDeferred
+        {
+            get { return _hasDeferred; }
+            set { _hasDeferred = value; }
+        }
 
         // Navigation Properties
         public virtual Event Event { get; set; }

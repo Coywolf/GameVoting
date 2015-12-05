@@ -82,8 +82,12 @@ namespace GameVoting.Models.ViewModels
         {
             HasVoted = true;
 
+            var member = e.Members.Single(m => m.UserId == UserId);
+
+            if (member.HasDeferred) { return; } // can't pull vote information if no votes were made
+
             var options = Options.OrderBy(o => o.OptionId).ToList();
-            var votes = e.Members.Single(m => m.UserId == UserId).Votes.OrderBy(v => v.Option.OptionId).ToList();
+            var votes = member.Votes.OrderBy(v => v.Option.OptionId).ToList();
 
             int optionPointer = 0, votePointer = 0;
             while (optionPointer < Options.Count)

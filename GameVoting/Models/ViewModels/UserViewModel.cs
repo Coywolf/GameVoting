@@ -11,6 +11,8 @@ namespace GameVoting.Models.ViewModels
         public int UserId { get; set; }
         public string UserName { get; set; }
 
+        public bool HasDeferred { get; set; }   // only used for EventMembers
+
         public UserViewModel(UserProfile u)
         {
             UserId = u.UserId;
@@ -21,6 +23,7 @@ namespace GameVoting.Models.ViewModels
         {
             UserId = m.UserId;
             UserName = m.User.UserName;
+            HasDeferred = m.HasDeferred;
         }
         public UserViewModel() { }
     }

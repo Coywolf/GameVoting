@@ -77,14 +77,15 @@
         }
     };
 
-    self.Submit = function () {
+    self.Submit = function (deferred) {
         $.ajax({
             url: '/Event/SubmitVote',
             type: 'POST',
             dataType: 'json',
             data: {
                 eventId: self.EventId,
-                voteData: ko.toJSON(self.Options)
+                voteData: deferred ? "[]" : ko.toJSON(self.Options),
+                deferred: deferred
             },
             success: function (data) {
                 if (data.Success) {
@@ -230,6 +231,7 @@ var MemberModel = function (data) {
 
     self.UserId = data.UserId;
     self.UserName = ko.observable(data.UserName);
+    self.HasDeferred = ko.observable(data.HasDeferred);
 };
 
 var debug;
