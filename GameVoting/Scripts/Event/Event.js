@@ -339,6 +339,12 @@ ko.extenders.resultsChart = function(target, selector) {
                         text: 'Scores'
                     },
                     allowDecimals: false
+                }, {
+                    title: {
+                        text: null
+                    },
+                    linkedTo: 0,
+                    opposite: true
                 }],
                 legend: {
                     enabled: false
@@ -369,7 +375,7 @@ ko.extenders.resultsChart = function(target, selector) {
                 });
             }
 
-            $("#"+selector).height(nv.Options.length * 60);
+            $("#"+selector).height(nv.Options.length * 40 + 145);
             target.chart = new Highcharts.Chart(chartOptions);
         } else {
             //update chart
