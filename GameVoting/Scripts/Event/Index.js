@@ -102,7 +102,7 @@
                     }
 
                     var memberElement = $('#member-select').first();
-                    var members = eventData.Members ? $.map(eventData.Members, function (m) {
+                    var members = (eventData.Members && eventData.IsPrivate) ? $.map(eventData.Members, function (m) {
                         return String(m.UserId);
                     }) : [];
                     memberElement.val(members);
