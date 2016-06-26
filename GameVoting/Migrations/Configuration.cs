@@ -26,21 +26,27 @@ namespace GameVoting.Migrations
                 new EventType() { Name = "Rank", Description = "Provide a unique rank for all options. Results are a simple sum of scores.", MinScore = 1, MaxScore = null });
 
             // Option Sets
-            var lunchGames = new OptionSet() { Name = "Lunch Games" };
-            context.OptionSet.AddOrUpdate(o => o.Name,
-                lunchGames);
+            //var lunchGames = new GameSet() { Name = "Lunch Games" };
+            //context.GameSet.AddOrUpdate(o => o.Name,
+            //    lunchGames);
 
-            context.Option.AddOrUpdate(o => o.Name,
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "One Night Ultimate Werewolf" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "Resistance: Avalon" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "Coup" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "Saboteur" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "Mascarade" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "Lifeboat" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "Skulls and Roses" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "Ultimate Werewolf" },
-                new Option() { OptionSetId = lunchGames.OptionSetId, Name = "No Game" });
-            
+            //context.Game.AddOrUpdate(o => o.Name,
+            //    new Game() { Name = "One Night Ultimate Werewolf" },
+            //    new Game() { Name = "Resistance: Avalon" },
+            //    new Game() { Name = "Coup" },
+            //    new Game() { Name = "Saboteur" },
+            //    new Game() { Name = "Mascarade" },
+            //    new Game() { Name = "Lifeboat" },
+            //    new Game() { Name = "Skulls and Roses" },
+            //    new Game() { Name = "Ultimate Werewolf" },
+            //    new Game() { Name = "No Game" });
+
+            //foreach(var game in context.Game)
+            //{
+            //    context.GameSetGame.AddOrUpdate(g => new { g.GameSetId, g.GameId },
+            //        new GameSetGame() { GameId = game.GameId, GameSetId = lunchGames.GameSetId });
+            //}
+
             // Seven Wonders
             context.WondersBoards.AddOrUpdate(b => b.Name,
                 new WondersBoards() { Name = "Giza (A)" },

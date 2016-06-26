@@ -14,14 +14,11 @@ namespace GameVoting.Models.DatabaseModels
 
         //Foreign Keys
         public int EventId { get; set; }
-
-        //Members
-        [MaxLength(100)]
-        [Required]
-        public string Name { get; set; }
+        public int GameId { get; set; }
 
         //Navigation Properties
         public virtual Event Event { get; set; }
+        public virtual Game Game { get; set; }
         public virtual ICollection<EventVote> Votes { get; set; } 
     }
 }

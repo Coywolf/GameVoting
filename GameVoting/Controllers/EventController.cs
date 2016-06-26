@@ -26,11 +26,11 @@ namespace GameVoting.Controllers
                 {
                     var eventTypes = db.EventType.OrderBy(t => t.Name).ToList().Select(t => new EventTypeViewModel(t));
                     var users = db.UserProfile.OrderBy(u => u.UserName).ToList().Select(u => new UserViewModel(u));
-                    var optionSets = db.OptionSet.OrderBy(o => o.Name).ToList().Select(o => new OptionSetViewModel(o));
+                    var gameSets = db.GameSet.OrderBy(o => o.Name).ToList().Select(o => new GameSetViewModel(o));
 
                     var eventCount = db.GetEvents(WebSecurity.IsAuthenticated ? WebSecurity.CurrentUserId : (int?)null).Count();
 
-                    return JsonHelpers.SuccessResponse("", new { eventTypes, users, optionSets, eventCount });
+                    return JsonHelpers.SuccessResponse("", new { eventTypes, users, gameSets, eventCount });
                 }
             }
             catch (Exception e)
@@ -275,10 +275,11 @@ namespace GameVoting.Controllers
 
                     foreach (var option in model.Options)
                     {
+                        // todo: match games on name if no game id
                         var newOption = new EventOption
                             {
                                 Event = newEvent,
-                                Name = option
+                                GameId = option.GameId.Value
                             };
                         db.EventOption.Add(newOption);
                     }

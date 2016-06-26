@@ -15,7 +15,7 @@ namespace GameVoting.Models.ViewModels
         public EventOptionViewModel(EventOption o, int? defaultScore)
         {
             OptionId = o.OptionId;
-            Name = o.Name;
+            Name = o.Game.Name;
             Score = defaultScore;
         }
         public EventOptionViewModel(){ }

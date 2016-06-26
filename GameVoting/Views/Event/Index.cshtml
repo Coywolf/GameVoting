@@ -62,8 +62,8 @@
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu" data-bind="foreach: $parent.OptionSets">
-                                <li data-bind="click: $parent.AddOptionSet"><a href="#" data-bind="text: name"></a></li>
+                            <ul class="dropdown-menu" role="menu" data-bind="foreach: $parent.GameSets">
+                                <li data-bind="click: $parent.AddGameSet"><a href="#" data-bind="text: name"></a></li>
                             </ul>
                         </div>
                         <button class="btn btn-primary" data-bind="click: $parent.CreateEvent">Submit</button>

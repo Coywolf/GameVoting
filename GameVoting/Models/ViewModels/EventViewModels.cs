@@ -40,8 +40,14 @@ namespace GameVoting.Models.ViewModels
 
     public class CreateEventViewModel : EventViewModel
     {
-        public List<string> Options { get; set; }
+        public List<CreateEventOptionViewModel> Options { get; set; }
         public List<int> Members { get; set; }
+    }
+
+    public class CreateEventOptionViewModel
+    {
+        public int? GameId { get; set; }
+        public string Name { get; set; }
     }
 
     public class DetailEventViewModel : EventViewModel
@@ -128,7 +134,7 @@ namespace GameVoting.Models.ViewModels
 
             foreach (var option in e.Options)
             {
-                var optionResult = new EventOptionResultViewModel(option.Name);
+                var optionResult = new EventOptionResultViewModel(option.Game.Name);
                 int curNumVotes = 0;
 
                 foreach (var vote in option.Votes)

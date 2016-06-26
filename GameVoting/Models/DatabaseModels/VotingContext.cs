@@ -24,8 +24,9 @@ namespace GameVoting.Models.DatabaseModels
         public DbSet<EventMember> EventMember { get; set; }
         public DbSet<EventType> EventType { get; set; }
         public DbSet<EventVote> EventVote { get; set; }
-        public DbSet<OptionSet> OptionSet { get; set; }
-        public DbSet<Option> Option { get; set; }
+        public DbSet<GameSet> GameSet { get; set; }
+        public DbSet<GameSetGame> GameSetGame { get; set; }
+        public DbSet<Game> Game { get; set; }
 
         // SevenWonders
         public DbSet<WondersGame> WondersGame { get; set; }

@@ -3,7 +3,7 @@
 
     self.EventTypes = ko.observableArray();
     self.Users = ko.observableArray();
-    self.OptionSets = ko.observableArray();
+    self.GameSets = ko.observableArray();
     
     self.EventCount = ko.observable(0);
     self.Events = ko.observableArray();
@@ -144,9 +144,9 @@ var EventModel = function(data) {
     self.AddOption = function () {
         self.Options.push(ko.observable(""));
     };
-    self.AddOptionSet = function(optionSet) {
-        for (var i = 0; i < optionSet.options.length; i++) {
-            self.Options.push(ko.observable(optionSet.options[i].name));
+    self.AddGameSet = function (gameSet) {
+        for (var i = 0; i < gameSet.options.length; i++) {
+            self.Options.push(gameSet.options[i]);
         }
     };
     self.RemoveOption = function (option) {
@@ -159,7 +159,7 @@ var EventModel = function(data) {
 var OptionModel = function(data) {
     var self = this;
 
-    self.OptionId = data.OptionId;
+    self.GameId = data.GameId;
     self.Name = ko.observable(data.Name);
 };
 
@@ -194,13 +194,13 @@ $(document).ready(function () {
                         name: u.UserName
                     };
                 }));
-                model.OptionSets($.map(data.Payload.optionSets, function (os) {
+                model.GameSets($.map(data.Payload.gameSets, function (os) {
                     return {
-                        id: os.OptionSetId,
+                        id: os.GameSetsId,
                         name: os.Name,
                         options: $.map(os.Options, function (o) {
                             return {
-                                id: o.OptionId,
+                                id: o.GameId,
                                 name: o.Name
                             };
                         })

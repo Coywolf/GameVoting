@@ -8,7 +8,7 @@
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4C7CE138-3F0D-499C-8130-C98DB8F010CB}</ProjectGuid>
-    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GameVoting</RootNamespace>
@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -229,6 +230,10 @@
     <Compile Include="Helpers\VotingContextExtensions.cs" />
     <Compile Include="Hubs\EventHub.cs" />
     <Compile Include="Hubs\Startup.cs" />
+    <Compile Include="Migrations\201606261946084_Games.cs" />
+    <Compile Include="Migrations\201606261946084_Games.Designer.cs">
+      <DependentUpon>201606261946084_Games.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DatabaseModels\Events\Event.cs" />
@@ -236,8 +241,9 @@
     <Compile Include="Models\DatabaseModels\Events\EventOption.cs" />
     <Compile Include="Models\DatabaseModels\Events\EventType.cs" />
     <Compile Include="Models\DatabaseModels\Events\EventVote.cs" />
-    <Compile Include="Models\DatabaseModels\Events\Option.cs" />
-    <Compile Include="Models\DatabaseModels\Events\OptionSet.cs" />
+    <Compile Include="Models\DatabaseModels\Events\Game.cs" />
+    <Compile Include="Models\DatabaseModels\Events\GameSet.cs" />
+    <Compile Include="Models\DatabaseModels\Events\GameSetGame.cs" />
     <Compile Include="Models\DatabaseModels\UserProfile.cs" />
     <Compile Include="Models\DatabaseModels\VotingContext.cs" />
     <Compile Include="Models\DatabaseModels\SevenWonders\WondersBoards.cs" />
@@ -248,7 +254,7 @@
     <Compile Include="Models\ViewModels\UserViewModel.cs" />
     <Compile Include="Models\ViewModels\EventOptionViewModels.cs" />
     <Compile Include="Models\ViewModels\EventViewModels.cs" />
-    <Compile Include="Models\ViewModels\OptionSetViewModels.cs" />
+    <Compile Include="Models\ViewModels\GameSetViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -342,6 +348,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201606261946084_Games.resx">
+      <DependentUpon>201606261946084_Games.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
