@@ -11,6 +11,7 @@ namespace GameVoting.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "GameVoting.Models.DatabaseModels.VotingContext";
         }
 
